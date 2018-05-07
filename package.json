@@ -1,0 +1,14 @@
+{
+  "name": "tflassistant",
+  "version": "1.0.0",
+  "description": "web app using google assistant to get tfl update",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JFM",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
