@@ -13,7 +13,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
   request({
     method: 'GET',
     uri: `https://api.tfl.gov.uk/Line/${tube_line}/Status`,
-    auth: {
+    params: {
       app_id: tflAppId,
       app_key: tflAppKey
     }
