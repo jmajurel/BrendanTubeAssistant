@@ -18,6 +18,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
   }, function(err, res, body){
     if(!err && res.statusCode === 200) {
       let [res] = body;
+      console.log(tube_line);
       console.log(res);
       conv.ask(`There is ${res.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?
