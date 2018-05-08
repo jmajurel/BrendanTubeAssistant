@@ -21,7 +21,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
     if(response.statusCode === 200) {
       response.on('data', function(data){
         let [tubeUpdate] = data;
-        conv.ask(`There is ${tubeUpdate.statusTube.lineStatuses[0].statusSeverityDescription} on the ${tube_line} line.
+        conv.ask(`There is ${tubeUpdate.lineStatuses[0].statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?`); 
       })
     }
