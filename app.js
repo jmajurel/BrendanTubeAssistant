@@ -20,8 +20,9 @@ app.intent('tube_status', (conv, {tube_line}) => {
   .on('response', function(response){
     if(response.statusCode === 200) {
       response.on('data', function(data){
-        let [res] = JSON.parse(data);
-        let [tubeUpdate] = res.lineStatuses;
+        let [res] = data;
+        let tubeUpdate = res.lineStatuses;
+        console.log('tubeUpdate: ' + tubeUpdate);
         conv.ask(`There is ${tubeUpdate.statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?`); 
       })
