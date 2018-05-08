@@ -16,17 +16,20 @@ app.intent('tube_status', (conv, {tube_line}) => {
       app_id: tflAppId,
       app_key: tflAppKey
     }
-  }, function(err, res, body){
-    var data = JSON.parse(body);
-    console.log('data: ' + data)
-    if(!err && res.statusCode === 200 && res) {
-      conv.ask(`There is ${data.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
-	  Do you wish to know the status for any other line?
-	  `); 
-    } else {
-      conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
-	  Do you wish to know the status for any other line?`);
+  }) 
+  .on('response', function(response){
+    if(response.statusCode === 200) {
+      response.on('data', function(data){
+	var statusTube = JSON.parse(data);
+        conv.ask(`There is ${statusTube.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
+	  Do you wish to know the status for any other line?`); 
+      })
     }
+  })
+  .on('error', function(error){
+    conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
+	Do you wish to know the status for any other line?`);
+
   });
 });
 
