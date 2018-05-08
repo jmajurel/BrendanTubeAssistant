@@ -20,6 +20,8 @@ app.intent('tube_status', (conv, {tube_line}) => {
   .on('response', function(response){
     if(response.statusCode === 200) {
       response.on('data', function(data){
+        console.log('data: ' + data);
+        console.log('res: ' + res);
         let [res] = data;
         let tubeUpdate = res.lineStatuses;
         console.log('tubeUpdate: ' + tubeUpdate);
