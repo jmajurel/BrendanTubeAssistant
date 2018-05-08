@@ -13,10 +13,12 @@ app.intent('tube_status', (conv, {tube_line}) => {
   request({
     method: 'GET',
     uri: `https://api.tfl.gov.uk/Line/${tube_line}/Status`,
-    app_id: tflAppId,
-    app_key: tflAppKey
+    auth: {
+      app_id: tflAppId,
+      app_key: tflAppKey
+    }
   }, function(err, res, body){
-    if(!err && res.statusCode === 200) {
+    if(!err && res.statusCode === 200 && res) {
       let [res] = body;
       console.log(tube_line);
       console.log(res);
