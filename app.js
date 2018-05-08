@@ -20,8 +20,8 @@ app.intent('tube_status', (conv, {tube_line}) => {
   .on('response', function(response){
     if(response.statusCode === 200) {
       response.on('data', function(data){
-	var statusTube = JSON.parse(data);
-        conv.ask(`There is ${statusTube.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
+        let [tubeUpdate] = data;
+        conv.ask(`There is ${tubeUpdate.statusTube.lineStatuses[0].statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?`); 
       })
     }
@@ -29,8 +29,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
   .on('error', function(error){
     conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
 	Do you wish to know the status for any other line?`);
-
   });
 });
 
-express().use(bodyParser.json(), bodyParser.urlencoded({ extended: false }), app).listen(process.env.PORT)
+express().use(bodyParser.json(), app).listen(process.env.PORT)
