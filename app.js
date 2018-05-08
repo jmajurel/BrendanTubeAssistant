@@ -1,11 +1,30 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var request = require('request');
+
 const { dialogflow } = require('actions-on-google');
+
+const tflAppId = 'a199d638';
+const tflAppKey = '4b9cf6ea343b37629649c8d7df2f2e3c';
 
 const app = dialogflow();
 
 app.intent('tube_status', (conv, {tube_line}) => {
-  conv.close(`You requested the update for the tube called ${tube_line} line`); 
+  request({
+    method: 'GET',
+    uri: `https://api.tfl.gov.uk/Line/${tube_line}/Status`,
+    app_id: tflAppId,
+    app_key: tflAppKey
+  }, function(err, res, {lineStatuses}){
+    if(!err && res.statusCode === 200) {
+      conv.ask(`There is ${lineStatuses.statusSeverityDescription} on the ${tube_line} line.
+	  Do you wish to know the status for any other line?
+	  `); 
+    } else {
+      conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
+	  Do you wish to know the status for any other line?`);
+    }
+  });
 });
 
 express().use(bodyParser.json(), app).listen(process.env.PORT)
