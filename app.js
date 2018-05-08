@@ -17,9 +17,10 @@ app.intent('tube_status', (conv, {tube_line}) => {
       app_key: tflAppKey
     }
   }, function(err, res, body){
+    var data = JSON.parse(body);
+    console.log('data: ' + data)
     if(!err && res.statusCode === 200 && res) {
-      let data = JSON.parse(body);
-      conv.ask(`There is ${data[0].lineStatuses.statusSeverityDescription} on the ${tube_line} line.
+      conv.ask(`There is ${data.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?
 	  `); 
     } else {
