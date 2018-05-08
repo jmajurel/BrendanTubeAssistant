@@ -1,13 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const { dialogflow } = require('actions-on-google');
 
-var app = express();
+const app = dialogflow();
 
-//app.use(bodyParser.urlencoded({extended: true});
-app.use(bodyParser.json());
-
-app.get('/', function(req, res) {
-  res.json({fulfillmentText: 'Hello Word!'});
+app.intent('tube_line_status', (conv, {tube_line}) => {
+  conv.close(`You requested the update for the tube line called ${tube_line}`); 
 });
 
-app.listen(process.env.PORT,process.env.IP);
+express().use(bodyParser.json(), app).listen(process.env.PORT)
