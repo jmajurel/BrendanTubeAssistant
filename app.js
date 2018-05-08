@@ -31,4 +31,4 @@ app.intent('tube_status', (conv, {tube_line}) => {
   });
 });
 
-express().use(bodyParser.json(), app).listen(process.env.PORT)
+express().use(bodyParser.json(), bodyParser.urlencoded({ extended: false })), app).listen(process.env.PORT)
