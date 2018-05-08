@@ -15,9 +15,9 @@ app.intent('tube_status', (conv, {tube_line}) => {
     uri: `https://api.tfl.gov.uk/Line/${tube_line}/Status`,
     app_id: tflAppId,
     app_key: tflAppKey
-  }, function(err, res, {lineStatuses}){
+  }, function(err, res, body){
     if(!err && res.statusCode === 200) {
-      conv.ask(`There is ${lineStatuses.statusSeverityDescription} on the ${tube_line} line.
+      conv.ask(`There is ${body.lineStatuses.statusSeverityDescription} on the ${tube_line} line.
 	  Do you wish to know the status for any other line?
 	  `); 
     } else {
