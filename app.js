@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var rp = require('request-promise-native');
 
-const { dialogflow } = require('actions-on-google');
+const { dialogflow, BasicCard, Button } = require('actions-on-google');
 
 const tflAppId = 'a199d638';
 const tflAppKey = '4b9cf6ea343b37629649c8d7df2f2e3c';
@@ -25,11 +25,20 @@ app.intent('tube_status', (conv, {tube_line}) => {
      let status = tubeUpdate[0].lineStatuses[0].statusSeverityDescription;
      conv.ask(`There is ${status} on the ${tube_line} line.
 	 Do you wish to know the status for any other line?`); 
+     conv.ask(new BasicCard({
+       title: `${tube_line} line Update`,
+       text: ${status},
+       buttons: new Button({
+	 title: 'tfl',
+	 url:'https://tfl.gov.uk/tube-dlr-overground/status/'
+       })
+     }));
    })
    .catch(function(err){
      conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
 	 Do you wish to know the status for any other line?`);
    });
 });
+
 
 express().use(bodyParser.json(), app).listen(process.env.PORT)
