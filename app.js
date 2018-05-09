@@ -27,7 +27,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
 	 Do you wish to know the status for any other line?`); 
      conv.ask(new BasicCard({
        title: `${tube_line} line Update`,
-       text: ${status},
+       text: status,
        buttons: new Button({
 	 title: 'tfl',
 	 url:'https://tfl.gov.uk/tube-dlr-overground/status/'
