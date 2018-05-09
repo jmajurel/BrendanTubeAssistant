@@ -23,10 +23,10 @@ app.intent('tube_status', (conv, {tube_line}) => {
  request(option, function(err, res, tubeUpdate){
    if(!err && res.statusResponse === 200 && tubeUpdate){
      let status = tubeUpdate[0].lineStatuses[0].statusSeverityDescription;
-     conv.ask(`There is ${status} on the ${tube_line} line.
+     conv.close(`There is ${status} on the ${tube_line} line.
 	 Do you wish to know the status for any other line?`); 
    } else {
-     conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
+     conv.close(`Sorry I cannot get the status update for the ${tube_line} line, 
 	 Do you wish to know the status for any other line?`);
    }
  });
