@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var rp = require('request-promise-native');
+var request = require('request');
 
 const { dialogflow } = require('actions-on-google');
 
@@ -11,6 +11,7 @@ const app = dialogflow();
 
 
 app.intent('tube_status', (conv, {tube_line}) => {
+
  const option = {
    uri: `https://api.tfl.gov.uk/Line/${tube_line}/Status`,
    qs: {
@@ -19,16 +20,16 @@ app.intent('tube_status', (conv, {tube_line}) => {
    },
    json: true
  };
- rp(option) 
-   .then(function(tubeUpdate){
+ request(option, function(err, res, tubeUpdate){
+   if(!err && res.statusResponse === 200 && tubeUpdate){
      let status = tubeUpdate[0].lineStatuses[0].statusSeverityDescription;
      conv.ask(`There is ${status} on the ${tube_line} line.
 	 Do you wish to know the status for any other line?`); 
-   })
-   .catch(function(err){
-      conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
-	Do you wish to know the status for any other line?`);
-   });
+   } else {
+     conv.ask(`Sorry I cannot get the status update for the ${tube_line} line, 
+	 Do you wish to know the status for any other line?`);
+   }
+ });
 });
 
 express().use(bodyParser.json(), app).listen(process.env.PORT)
