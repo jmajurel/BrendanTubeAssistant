@@ -19,7 +19,7 @@ app.intent('tube_status', (conv, {tube_line}) => {
    },
    json: true
  };
- rp.request(option) 
+ rp(option) 
    .then(function(tubeUpdate){
      let status = tubeUpdate[0].lineStatuses[0].statusSeverityDescription;
      conv.ask(`There is ${status} on the ${tube_line} line.
