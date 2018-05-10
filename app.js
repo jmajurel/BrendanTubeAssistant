@@ -1,34 +1,13 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var rp = require('request-promise-native');
-const {dialogflow, BasicCard, Button, Suggestions} = require('actions-on-google');
+var brendan  = require('brendan');
 
-const rpOption = {
-  baseUrl: "https://api.tfl.gov.uk/
-  qs: {
-    app_id: process.env.TFLAppId,
-    app_key: process.env.TFLAppKey
-  },
-  json: true
-};
-
+const {dialogflow} = require('actions-on-google');
 const app = dialogflow();
 
-app.intent('generalUpdate', conv => {
+app.intent(brendan);
 
-  rpOption.uri = "/Line/Mode/tube/Status";
-  return rp(rpOption)
-    .then(function(body){
-
-    })
-    .catch(function(err){
-      conv.ask();
-      conv.ask(new Suggestions('I can give you other information'));
-    });
-
-});
-
-app.intent('tube_status', (conv, {tube_line}) => {
+/*app.intent('tube_status', (conv, {tube_line}) => {
 
  rpOption.uri = `/Line/${tube_line}/Status`;
 
@@ -57,5 +36,6 @@ app.intent('tube_status', (conv, {tube_line}) => {
 	 Do you wish to know the status for any other line?`);
    });
 });
+*/
 
 express().use(bodyParser.json(), app).listen(process.env.PORT)
