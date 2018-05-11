@@ -11,21 +11,23 @@ const rpOption = {
   json: true
 };
 
+class tubeLine() {
+  constructor(name, status="", reason=""){
+    this.name = name;
+    this.status = status;
+    this.reason = reason;
+  }
+}
+
 modulePackage.getStatusUpdate = () => {
 
   rpOption.uri = "/Line/Mode/tube/Status";
 
   return rp(rpOption)
-    .then(body => {
-      return body.reduce((acc, line) => {
-	let stat = line.lineStatuses.reduce((acc, statusLine) => {
-	  acc += `statusLine.statusSeverityDescription `;
-	  return acc;
-	}, "");
-	acc.set(line.name, stat);
-	return acc;
-      }, new Map());
+    .then(lines => { 
+      return [{name, lineStatus: [{statusSeverityDescription: status, reason} ]}]= [{lineStatus:[{reason=''}]}] = lines;
     })
+    .then
 };
 
 module.exports = modulePackage;
