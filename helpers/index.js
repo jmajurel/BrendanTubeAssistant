@@ -28,11 +28,16 @@ const extractStatusUpdate = lines => {
 
 const dataPrepForConversation = linesUpdate => {
 
-  let delayedLines = linesUpdate.filter(lineUpdate => lineUpdate.statuses.filter({statusDesc, reason} => statusDesc === 'Good Service').length === 0)
+  let delayedLines = linesUpdate.filter(lineUpdate => { 
+    let delays = lineUpdate.statuses.filter(({statusDesc='', reason=''}) => {
+      return statusDesc === 'Good Service';
+    });
+    return delays.length === 0 ;
+   });
 
   if(delayedLines.length > 0){
     delayedLines.reduce((acc, {name, statuses}) => {
-      statuses.forEach({statusDesc} => {
+      statuses.forEach(({statusDesc}) => {
 	acc[statusDesc] += ` ${name}`; 
       });
       return acc;
