@@ -12,8 +12,7 @@ const rpOption = {
 };
 
 const conversationFallback = conv => {
-  conv.ask(`Sorry I cannot get the status update for the ${tube_line} line,
-      Do you wish to know the status for any other line?`);
+  conv.ask(`Sorry I cannot get the tube update at the moment`);
 }
 
 const extractStatusUpdate = lines => {
@@ -52,7 +51,7 @@ const conversationResult = (delays, conv) => {
   }
 };
 
-const visualResult = (delays, conv) => {
+/*const visualResult = (delays, conv) => {
   conv.ask(new BasicCard({
     title: `${tube_line} line Update`,
     text: statusSeverityDescription,
@@ -62,6 +61,7 @@ const visualResult = (delays, conv) => {
     })
   }))
 };
+*/
 
 modulePackage.getStatusUpdate = () => {
 
@@ -69,8 +69,9 @@ modulePackage.getStatusUpdate = () => {
 
   return rp(rpOption)
     .then(extractStatusUpdate)
+    .then(dataPrepForConversation)
     .then(conversationResult)
-    .then(visualResult)
+//    .then(visualResult)
     .catch(conversationFallback); 
 };
 
