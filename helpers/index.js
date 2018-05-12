@@ -3,7 +3,7 @@ var rp = require('request-promise-native');
 var modulePackage = {}
 
 const rpOption = {
-  baseUrl: "https://api.tfl.gov.uk/
+  baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
     app_id: process.env.TFLAppId,
     app_key: process.env.TFLAppKey
