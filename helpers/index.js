@@ -69,7 +69,7 @@ const conversationResult = (delays, conv) => {
 };
 */
 
-modulePackage.getStatusUpdate = () => {
+modulePackage.getStatusUpdate = (conv) => {
 
   rpOption.uri = "/Line/Mode/tube/Status";
 
