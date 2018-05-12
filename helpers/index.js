@@ -37,6 +37,7 @@ const dataPrepForConversation = linesUpdate => {
       });
       return acc;
     },{});
+  }
 };
 
 const conversationResult = (delays, conv) => {
