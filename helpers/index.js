@@ -1,6 +1,6 @@
 var rp = require('request-promise-native');
 
-var modulePackage = {}
+var modulePackage = {};
 
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
@@ -16,14 +16,8 @@ const conversationFallback = conv => {
 }
 
 const extractStatusUpdate = lines => {
-  return lines.reduce((acc, {name: tubeName, lineStatuses}) => {
-    let statuses = lineStatuses.reduce((acc, {statusSeverityDescription:statusDesc, reason=''})=>{
-      acc.push({statusDesc: statusDesc, reason: reason});
-      return acc;
-    },[]);
-    acc.push({name: tubeName, statuses: statuses});
-    return acc;
-  },[])
+  return lines.map(({name: tubeName, lineStatuses}) => 
+    lineSatuses.map(({statusSeverityDescription: statusDesc, reason} = {statusDesc, reason=''}) => {tubeName, lineStatuses: [statusDesc, reason]});
 };
 
 const dataPrepForConversation = linesUpdate => {
