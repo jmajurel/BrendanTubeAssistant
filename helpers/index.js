@@ -11,23 +11,17 @@ const rpOption = {
   json: true
 };
 
-const conversationFallback = conv => {
+const conversationFallback = () => {
   conv.ask(`Sorry I cannot get the tube update at the moment`);
 }
 
 const extractStatusUpdate = lines => {
-  return lines.map(({name: tubeName, lineStatuses}) => 
-    lineSatuses.map(({statusSeverityDescription: statusDesc, reason} = {statusDesc, reason=''}) => {tubeName, lineStatuses: [statusDesc, reason]});
+  return lines.map({name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]} = {lineStatuses:[{reason:''}]});
 };
 
 const dataPrepForConversation = linesUpdate => {
 
-  let delayedLines = linesUpdate.filter(lineUpdate => { 
-    let delays = lineUpdate.statuses.filter(({statusDesc='', reason=''}) => {
-      return statusDesc === 'Good Service';
-    });
-    return delays.length === 0 ;
-   });
+  let delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
 
   if(delayedLines.length > 0){
     delayedLines.reduce((acc, {name, statuses}) => {
@@ -39,7 +33,7 @@ const dataPrepForConversation = linesUpdate => {
   }
 };
 
-const conversationResult = (delays, conv) => {
+const conversationResult = (delays) => {
   if(delays > 0) {
     let sentence = delays.length > 1 ? 'there are ' : 'there is ';
     for(let [key, val] of delays){
@@ -63,7 +57,7 @@ const conversationResult = (delays, conv) => {
 };
 */
 
-modulePackage.getStatusUpdate = (conv) => {
+modulePackage.getStatusUpdate = conv => {
 
   rpOption.uri = "/Line/Mode/tube/Status";
 
