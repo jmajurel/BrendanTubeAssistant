@@ -11,7 +11,7 @@ const rpOption = {
   json: true
 };
 
-const conversationFallback = () => {
+const conversationFallback = (conv) => {
   conv.ask(`Sorry I cannot get the tube update at the moment`);
 }
 
@@ -33,7 +33,7 @@ const dataPrepForConversation = linesUpdate => {
   }
 };
 
-const conversationResult = (delays) => {
+const conversationResult = (delays, conv) => {
   if(delays > 0) {
     let sentence = delays.length > 1 ? 'there are ' : 'there is ';
     for(let [key, val] of delays){
