@@ -12,7 +12,7 @@ const rpOption = {
 };
 
 const conversationFallback = (conv) => {
-  conv.ask(`Sorry I cannot get the tube update at the moment`);
+  
 }
 
 const extractStatusUpdate = lines => {
@@ -66,7 +66,7 @@ modulePackage.getStatusUpdate = conv => {
     .then(dataPrepForConversation)
     .then(conversationResult)
 //    .then(visualResult)
-    .catch(conversationFallback); 
+    .catch(function () => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
 };
 
 module.exports = modulePackage;
