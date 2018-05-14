@@ -35,7 +35,7 @@ modulePackage.getStatusUpdate = conv => {
     .then(linesUpdate => {
       var delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
       if(delayedLines.length > 0){
-	delayedLines.reduce((acc, {name, statuses}) => {
+	return delayedLines.reduce((acc, {name, statuses}) => {
 	  statuses.forEach(({statusDesc}) => {
 	    acc[statusDesc] += ` ${name}`; 
 	  });
