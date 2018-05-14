@@ -11,39 +11,13 @@ const rpOption = {
   json: true
 };
 
-const conversationFallback = (conv) => {
-  
-}
+
 
 const extractStatusUpdate = lines => {
-  return lines.map({name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]} = {lineStatuses:[{reason:''}]});
 };
 
-const dataPrepForConversation = linesUpdate => {
-
-  let delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
-
-  if(delayedLines.length > 0){
-    delayedLines.reduce((acc, {name, statuses}) => {
-      statuses.forEach(({statusDesc}) => {
-	acc[statusDesc] += ` ${name}`; 
-      });
-      return acc;
-    },{});
-  }
-};
-
-const conversationResult = (delays, conv) => {
-  if(delays > 0) {
-    let sentence = delays.length > 1 ? 'there are ' : 'there is ';
-    for(let [key, val] of delays){
-      sentence += `${key} on ${val} `
-    }
-    conv.ask(sentence);
-  } else {
-    conv.ask('Good service on All lines');
-  }
-};
+const dataPrepForConversation = 
+const conversationResult = (delays, conv) => 
 
 /*const visualResult = (delays, conv) => {
   conv.ask(new BasicCard({
@@ -62,10 +36,32 @@ modulePackage.getStatusUpdate = conv => {
   rpOption.uri = "/Line/Mode/tube/Status";
 
   return rp(rpOption)
-    .then(extractStatusUpdate)
-    .then(dataPrepForConversation)
-    .then(conversationResult)
-//    .then(visualResult)
+    .then(() => {
+	return lines.map({name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]} = {lineStatuses:[{reason:''}]});
+    })
+    .then(linesUpdate => {
+      let delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
+      if(delayedLines.length > 0){
+	delayedLines.reduce((acc, {name, statuses}) => {
+	  statuses.forEach(({statusDesc}) => {
+	    acc[statusDesc] += ` ${name}`; 
+	  });
+	  return acc;
+	},{});
+      }
+    })
+    .then(delays => {
+      if(delays > 0) {
+	let sentence = delays.length > 1 ? 'there are ' : 'there is ';
+	for(let [key, val] of delays){
+	  sentence += `${key} on ${val} `
+	}
+	conv.ask(sentence);
+      } else {
+	conv.ask('Good service on All lines');
+      }
+    })
+//  .then(visualResult)
     .catch(() => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
 };
 
