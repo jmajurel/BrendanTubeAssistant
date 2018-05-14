@@ -29,11 +29,11 @@ modulePackage.getStatusUpdate = conv => {
   rpOption.uri = "/Line/Mode/tube/Status";
 
   return rp(rpOption)
-    .then((lines) => {
+    .then(lines => {
 	return lines.map({name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]} = {lineStatuses:[{reason:''}]});
     })
     .then(linesUpdate => {
-      let delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
+      var delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
       if(delayedLines.length > 0){
 	delayedLines.reduce((acc, {name, statuses}) => {
 	  statuses.forEach(({statusDesc}) => {
