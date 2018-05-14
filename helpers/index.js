@@ -66,7 +66,7 @@ modulePackage.getStatusUpdate = conv => {
     .then(dataPrepForConversation)
     .then(conversationResult)
 //    .then(visualResult)
-    .catch(function () => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
+    .catch(() => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
 };
 
 module.exports = modulePackage;
