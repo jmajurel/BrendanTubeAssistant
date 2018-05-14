@@ -56,7 +56,7 @@ modulePackage.getStatusUpdate = conv => {
       }
     })
 //  .then(visualResult)
-    .catch(() => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
+    //.catch(() => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
 };
 
 module.exports = modulePackage;
