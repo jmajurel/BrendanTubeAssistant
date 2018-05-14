@@ -12,13 +12,6 @@ const rpOption = {
 };
 
 
-
-const extractStatusUpdate = lines => {
-};
-
-const dataPrepForConversation = 
-const conversationResult = (delays, conv) => 
-
 /*const visualResult = (delays, conv) => {
   conv.ask(new BasicCard({
     title: `${tube_line} line Update`,
