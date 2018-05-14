@@ -29,8 +29,14 @@ modulePackage.getStatusUpdate = conv => {
   rpOption.uri = "/Line/Mode/tube/Status";
 
   return rp(rpOption)
-    .then({name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]} = {lineStatuses: [{reason:''}]});
-    .then(linesUpdate => {
+    .then(([{name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]}] = [{lineStatuses: [{reason:''}]}]) => {
+     switch(statusDesc) {
+       case 'Good Service': 
+	 break;
+       case 'Major delays': 
+
+     } 
+
       var delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
       if(delayedLines.length > 0){
 	return delayedLines.reduce((acc, {name, statuses}) => {
