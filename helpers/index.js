@@ -30,6 +30,7 @@ async function summarizedStatus() {
       let {description: statusTitle} = severity.find(item => item.severityLevel === statusSeverity);
       summary[statusTitle] += ` ${name}`;
     });
+    return summary;
   }, {});
 }
 
