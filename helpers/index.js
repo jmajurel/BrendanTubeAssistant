@@ -43,7 +43,7 @@ modulePackage.convStatusUpdate = async (conv) => {
   
   let updates = await summarizedStatus();
   let sentence = updates.length > 1 ? 'There are ' : 'There is ';
-  for(let [status, lines] of updates){
+  for({status, lines} of updates){
     sentence += `${status} on ${lines}`;
   }
   conv.ask(sentence);
