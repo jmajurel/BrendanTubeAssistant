@@ -22,14 +22,12 @@ function getStatus() {
 
 async function summarizedStatus() {
   let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
-  lines.then(lines => {
-    return lines.reduce(summary, ({name, lineStatuses}) => {
-      lineStatuses.forEach(({statusSeverity}) => {
-        let ({description: statusTitle}) = severity.find(item => item.severityLevel === statusSeverity);
-	summary[statusTitle] += ` ${name}`;
-      });
-    }, {});
-  })
+  return lines.reduce(summary, ({name, lineStatuses}) => {
+    lineStatuses.forEach(({statusSeverity}) => {
+      let ({description: statusTitle}) = severity.find(item => item.severityLevel === statusSeverity);
+      summary[statusTitle] += ` ${name}`;
+    });
+  }, {});
 }
 
 module.exports.convStatusUpdate = function convStatusUpdate(conv) {
