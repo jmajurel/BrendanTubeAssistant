@@ -14,11 +14,11 @@ const rpOption = {
 function getSeverity() {
   rpOption.uri = '/Line/Meta/Severity';
   return rp(rpOption)
-    .then(body => body.find(({modeName}) => modeName === 'tube'))
+    .then(body => body.filter(({modeName}) => modeName !== 'tube'))
 }
 
-function getSeverityDesc(level){
-  let {description} = severity.find(({severityLevel}) => severityLevel === level);
+function getSeverityDesc(arr, level){
+  let {description} = arr.find(({severityLevel}) => severityLevel === level);
   return description;
 }
 
@@ -32,7 +32,7 @@ async function summarizedStatus() {
   console.log(severity);
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity}) => {
-      let description = getSeverityDesc(statusSeverity);
+      let description = getSeverityDesc(severity, statusSeverity);
       summary[description] += ` ${name}`;
     });
     return summary;
