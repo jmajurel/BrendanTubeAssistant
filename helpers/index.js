@@ -29,7 +29,6 @@ function getStatus() {
 
 async function summarizedStatus() {
   let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
-  console.log(severity);
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity}) => {
       let description = getSeverityDesc(severity, statusSeverity);
@@ -42,10 +41,11 @@ async function summarizedStatus() {
 modulePackage.convStatusUpdate = async (conv) => {
   
   let updates = await summarizedStatus();
-  let sentence = updates.length > 1 ? 'There are ' : 'There is ';
+  let sentence =  Object.keys(updates).length > 1 ? 'There are ' : 'There is ';
   for({status, lines} of updates){
     sentence += `${status} on ${lines}`;
   }
+
   conv.ask(sentence);
 }
 
