@@ -1,5 +1,7 @@
 var rp = require('request-promise-native');
 
+let modulePackage = {};
+
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
@@ -21,7 +23,7 @@ function getStatus() {
 }
 
 async function summarizedStatus() {
-  let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
+  let [severity, lines] = await Promise.all([getSeverity, getStatus]);
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity}) => {
       let {description: statusTitle} = severity.find(item => item.severityLevel === statusSeverity);
@@ -30,20 +32,17 @@ async function summarizedStatus() {
   }, {});
 }
 
-module.exports.convStatusUpdate = function convStatusUpdate(conv) {
+modulePackage.convStatusUpdate = async (conv) => {
   
-  return summarizedStatus()
-    .then(updates => {
-      let sentence = updates.length > 1 ? 'There are ' : 'There is ';
-      for(let [status, lines] of updates){
-	sentence += `${status} on ${lines}`;
-      }
-      return sentence;
-    })
-    .then(sentence => {
-      conv.ask(sentence);
-    })
+  let updates = await summarizedStatus();
+  let sentence = updates.length > 1 ? 'There are ' : 'There is ';
+  for(let [status, lines] of updates){
+    sentence += `${status} on ${lines}`;
+  }
+  conv.ask(sentence);
 }
+
+module.exports = modulePackage;
 
 /*const visualResult = (delays, conv) => {
   conv.ask(new BasicCard({
