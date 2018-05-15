@@ -32,19 +32,22 @@ async function summarizedStatus() {
   })
 }
 
-function convStatusUpdate(conv){
+module.exports = {
+  
+  convStatusUpdate(conv){
 
-  return summarizedStatus()
-    .then(updates => {
-      let sentence = updates.length > 1 ? 'There are ' : 'There is ';
-      for(let [status, lines] of updates){
-	sentence += `${status} on ${lines}`;
-      }
-      return sentence;
-    })
-    .then(sentence => {
-      conv.ask(sentence);
-    })
+    return summarizedStatus()
+      .then(updates => {
+	let sentence = updates.length > 1 ? 'There are ' : 'There is ';
+	for(let [status, lines] of updates){
+	  sentence += `${status} on ${lines}`;
+	}
+	return sentence;
+      })
+      .then(sentence => {
+	conv.ask(sentence);
+      })
+  }
 }
 
 /*const visualResult = (delays, conv) => {
@@ -59,4 +62,3 @@ function convStatusUpdate(conv){
 };
 */
 
-module.exports = convStatusUpdate;
