@@ -21,7 +21,7 @@ function getStatus() {
 }
 
 async function summarizedStatus() {
-  let [severity, lines] = await Promise.all(getSeverity(), getStatus());
+  let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
   lines.then(lines => {
     return lines.reduce(summary, ({name, lineStatuses}) => {
       lineStatuses.forEach(({statusSeverity}) => {
