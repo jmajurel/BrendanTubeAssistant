@@ -32,7 +32,7 @@ async function summarizedStatus() {
   })
 }
 
-module.exports.convStatusUpdate = (conv) => {
+module.exports.convStatusUpdate = function convStatusUpdate(conv) {
   
   return summarizedStatus()
     .then(updates => {
