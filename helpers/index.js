@@ -17,6 +17,11 @@ function getSeverity() {
     .then(body => body.find(({modeName}) => modeName === 'tube'))
 }
 
+function getSeverityDesc(level){
+  let {description} = severity.find(({severityLevel}) => severityLevel === level);
+  return description;
+}
+
 function getStatus() {
   rpOption.uri = '/Line/Mode/tube/Status';
   return rp(rpOption)
@@ -24,11 +29,11 @@ function getStatus() {
 
 async function summarizedStatus() {
   let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
-  console.log(lines);
+  console.log(severity);
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity}) => {
-      let {description: statusTitle} = severity.find(item => item.severityLevel === statusSeverity);
-      summary[statusTitle] += ` ${name}`;
+      let description = getSeverityDesc(statusSeverity);
+      summary[description] += ` ${name}`;
     });
     return summary;
   }, {});
