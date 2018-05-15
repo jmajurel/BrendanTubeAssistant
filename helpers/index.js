@@ -1,7 +1,5 @@
 var rp = require('request-promise-native');
 
-var modulePackage = {};
-
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
@@ -11,6 +9,43 @@ const rpOption = {
   json: true
 };
 
+function getSeverity() {
+  rpOption.uri = '/Line/Meta/Severity';
+  return rp(rpOption)
+    .then(body => body.find(({modeName}) => modeName === 'tube'))
+}
+
+function getStatus() {
+  rpOption.uri = '/Line/Mode/tube/Status';
+  return rp(rpOption)
+}
+
+async function summarizedStatus() {
+  let [severity, lines] = await Promise.all(getSeverity(), getStatus());
+  lines.then(lines => {
+    return lines.reduce(summary, ({name, lineStatuses}) => {
+      lineStatuses.forEach(({statusSeverity}) => {
+        let ({description: statusTitle}) = severity.find(item => item.severityLevel === statusSeverity);
+	summary[statusTitle] += ` ${name}`;
+      });
+    }, {});
+  })
+}
+
+function convStatusUpdate(conv){
+
+  return summarizedStatus()
+    .then(updates => {
+      let sentence = updates.length > 1 ? 'There are ' : 'There is ';
+      for(let [status, lines] of updates){
+	sentence += `${status} on ${lines}`;
+      }
+      return sentence;
+    })
+    .then(sentence => {
+      conv.ask(sentence);
+    })
+}
 
 /*const visualResult = (delays, conv) => {
   conv.ask(new BasicCard({
@@ -24,43 +59,4 @@ const rpOption = {
 };
 */
 
-modulePackage.getStatusUpdate = conv => {
-
-  rpOption.uri = "/Line/Mode/tube/Status";
-
-  return rp(rpOption)
-    .then(([{name: tubeName, lineStatuses: [{statusSeverityDescription: statusDesc, reason}]}] = [{lineStatuses: [{reason:''}]}]) => {
-     switch(statusDesc) {
-       case 'Good Service': 
-	 break;
-       case 'Major delays': 
-
-     } 
-
-      var delayedLines = linesUpdate.find(({lineStatuses: [statusDesc]}) => statusDesc !== 'Good Service'); 
-      if(delayedLines.length > 0){
-	return delayedLines.reduce((acc, {name, statuses}) => {
-	  statuses.forEach(({statusDesc}) => {
-	    acc[statusDesc] += ` ${name}`; 
-	  });
-	  return acc;
-	},{});
-      }
-      return delayedLines;
-    })
-    .then(delays => {
-      if(delays > 0) {
-	let sentence = delays.length > 1 ? 'there are ' : 'there is ';
-	for(let [key, val] of delays){
-	  sentence += `${key} on ${val} `
-	}
-	conv.ask(sentence);
-      } else {
-	conv.ask('Good service on All lines');
-      }
-    })
-//  .then(visualResult)
-    //.catch(() => conv.ask(`Sorry I cannot get the tube update at the moment`)); 
-};
-
-module.exports = modulePackage;
+module.exports = convStatusUpdate;
