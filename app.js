@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-const {convStatusUpdates, convLines} = require('./helpers/index.js');
+const {convStatusUpdates, convLines} = require('./helpers');
 
 const { dialogflow } = require('actions-on-google');
 const app = dialogflow();

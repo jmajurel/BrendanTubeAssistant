@@ -4,7 +4,6 @@ const rp = require('request-promise-native');
 const {ssml} = require('./utils.js');
 
 const {Table, Button} = require('actions-on-google');
-
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
@@ -13,6 +12,8 @@ const rpOption = {
   },
   json: true
 };
+
+let modulePackage = {};
 
 function getSeverity() {
   rpOption.uri = '/Line/Meta/Severity';
@@ -67,7 +68,7 @@ function generatedStatusPanel(lines){
   });
 }
 
-const convStatusUpdates = async (conv) => {
+modulePackage.convStatusUpdates = async (conv) => {
 
   try { 
     let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
@@ -95,7 +96,7 @@ const convStatusUpdates = async (conv) => {
   }
 };
 
-const convLines = async (conv) => {
+modulePackage.convLines = async (conv) => {
 
   try {
     let lines = await getLines();
@@ -116,4 +117,4 @@ const convLines = async (conv) => {
   } 
 };
 
-module.exports = {convLines, convStatusUpdates};
+module.exports = modulePackage;
