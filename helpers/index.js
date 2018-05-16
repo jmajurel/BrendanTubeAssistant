@@ -1,7 +1,9 @@
-var rp = require('request-promise-native');
-const { Table, Button } = require('actions-on-google');
+'use strict'
 
-let modulePackage = {};
+const rp = require('request-promise-native');
+const  {ssml} = require('./utils');
+
+const { Table, Button } = require('actions-on-google');
 
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
@@ -35,7 +37,6 @@ function getTubeSeverityDesc(arr, level){
 }
 
 
-
 //return a map with key=Status value=lines
 function summarizedStatus(lines) {
   return lines.reduce((summary, {name, lineStatuses}) => {
@@ -66,7 +67,7 @@ function generatedStatusPanel(lines){
   });
 }
 
-modulePackage.convStatusUpdates = async (conv) => {
+const convStatusUpdates = async (conv) => {
 
   try { 
     let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
@@ -82,7 +83,7 @@ modulePackage.convStatusUpdates = async (conv) => {
       let [uniqueStatus] = updates;
       sentence = `There is <emphasis level="strong">${uniqueStatus[0]} on all lines</emphasis>`;
     }
-    conv.ask(`
+    conv.ask(ssml`
 	<speak>
 	  ${sentence}
 	</speak>`);
@@ -94,11 +95,12 @@ modulePackage.convStatusUpdates = async (conv) => {
   }
 }
 
-modulePackage.convLines = async (conv) => {
+const convLines = async (conv) => {
+
   try {
     let lines = await getLines();
     lines = lines.map(({name}) => name);
-    conv.ask(`
+    conv.ask(ssml`
 	<speak>
 	  There are <say-as interpret-as="unit">${lines.length} tube lines</say-as> in London which are ${lines.join(' ')}
 	</speak>
@@ -114,4 +116,4 @@ modulePackage.convLines = async (conv) => {
   } 
 }
 
-module.exports = modulePackage;
+module.exports = {convLines, convStatusUpdates};
