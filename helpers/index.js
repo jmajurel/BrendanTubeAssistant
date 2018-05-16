@@ -48,8 +48,8 @@ modulePackage.convStatusUpdate = async (conv) => {
       sentence += `${status} on ${lines}`;
     }
   } else {
-    let [status] = updates;
-    sentence = `There is ${status} on all lines`;
+    let [UniqueStatus] = updates;
+    sentence = `There is ${UniqueStatus[0]} on all lines`;
   }
 
   conv.ask(sentence);
