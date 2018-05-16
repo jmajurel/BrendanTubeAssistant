@@ -1,9 +1,9 @@
 'use strict'
 
 const rp = require('request-promise-native');
+const {Table, Button} = require('actions-on-google');
 const {ssml} = require('./utils.js');
 
-const {Table, Button} = require('actions-on-google');
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
