@@ -43,7 +43,9 @@ function generatedStatusPanel(lines){
 
   let panel = new Table({
     dividers: true,
-    columns: ['Line', 'Status']
+    columns: ['Line', 'Status'],
+    rows: [],
+
   });
 
   return lines.reduce(panel, ({name: lineName, lineStatuses}) =>{
@@ -58,8 +60,7 @@ modulePackage.convStatusUpdate = async (conv) => {
   try { 
     let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
     let updates = summarizedStatus(lines);
-    let panel = generatedStatusPanel(lines);
-
+    //let panel = generatedStatusPanel(lines);
     let sentence = ''; 
     if(updates.length > 1){
       sentence = 'There are ';
@@ -71,7 +72,16 @@ modulePackage.convStatusUpdate = async (conv) => {
       sentence = `There is ${uniqueStatus[0]} on all lines`;
     }
     conv.ask(sentence);
-    conv.ask(panel);
+    //conv.ask(panel);
+    conv.ask(new Table({
+      dividers: true,
+      columns: ['header 1', 'header 2', 'header 3'],
+      rows: [
+	['row 1 item 1', 'row 1 item 2', 'row 1 item 3'],
+	['row 2 item 1', 'row 2 item 2', 'row 2 item 3'],
+      ],
+    }))
+
   } catch(e) {
     console.log(e);
     conv.ask('Sorry I cannot get the tube update at the moment');
