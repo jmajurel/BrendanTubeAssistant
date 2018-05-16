@@ -1,5 +1,5 @@
 var rp = require('request-promise-native');
-const { Table } = require('actions-on-google');
+const { Table, Button } = require('actions-on-google');
 
 let modulePackage = {};
 
@@ -41,17 +41,19 @@ function summarizedStatus(lines) {
 //return a Table object containing the status update
 function generatedStatusPanel(lines){
 
-  let panel = new Table({
-    dividers: true,
-    columns: ['Line', 'Status'],
-    rows: []
-  });
-
   return lines.reduce(panel, ({name: lineName, lineStatuses}) =>{
     let statusDesc = lineStatuses.map(({description}) => description).join(', ');
     panel.rows.push([lineName, sstatusDesc]);
     return panel;
-  }, panel);  
+  }, new Table({
+    tile: 'Status Update',
+    dividers: true,
+    columns: ['Line', 'Status'],
+    button: new Button({
+      title: 'Get more info',
+      url: 'https://tfl.gov.uk'
+    })
+  }));  
 }
 
 modulePackage.convStatusUpdate = async (conv) => {
