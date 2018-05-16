@@ -42,7 +42,7 @@ function summarizedStatus(lines) {
 function generatedStatusPanel(lines){
 
   let statusUpdate = lines.reduce((acc, {name: lineName, lineStatuses}) => {
-    let statusDesc = lineStatuses.map(({description}) => description).join(', ');
+    let statusDesc = lineStatuses.map(({statusSeverityDescription: description}) => description).join(', ');
     acc.push([lineName, statusDesc]);
     return acc;
   }, []);  
