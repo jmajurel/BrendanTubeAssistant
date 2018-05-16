@@ -1,9 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const {dialogflow} = require('actions-on-google');
 
 const helpers = require('./helpers/index.js');
 
-const { dialogflow } = require('actions-on-google');
 const app = dialogflow();
 
 app.intent('status_updates', helpers.convStatusUpdates);
