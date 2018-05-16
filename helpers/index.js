@@ -41,7 +41,7 @@ function summarizedStatus(lines) {
 //return a Table object containing the status update
 function generatedStatusPanel(lines){
 
-  return lines.reduce(panel, ({name: lineName, lineStatuses}) =>{
+  return lines.reduce((panel, ({name: lineName, lineStatuses})) =>{
     let statusDesc = lineStatuses.map(({description}) => description).join(', ');
     panel.rows.push([lineName, sstatusDesc]);
     return panel;
