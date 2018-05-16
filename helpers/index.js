@@ -92,19 +92,19 @@ modulePackage.convStatusUpdates = async (conv) => {
 }
 
 modulePackage.convLines = async (conv) => {
- try {
-   let lines = await getLines();
-   lines = lines.map(({name}) => name);
-   conv.ask(`There are ${lines.length} tube lines in London which are ${lines.join(' ')}`);
-   conv.ask(new Table({
-     title: 'Tube Lines',
-     dividers: true,
-     columns: ['name'],
-     rows: lines
-   }));
- } catch(e) {
-   conv.ask('Sorry I cannot tell you that answer at the moment');
- } 
+  try {
+    let lines = await getLines();
+    lines = lines.map(({name}) => name);
+    conv.ask(`There are ${lines.length} tube lines in London which are ${lines.join(' ')}`);
+    conv.ask(new Table({
+      title: 'Tube Lines',
+      dividers: true,
+      columns: ['name'],
+      rows: [lines]
+    }));
+  } catch(e) {
+    conv.ask('Sorry I cannot tell you that answer at the moment');
+  } 
 }
 
 module.exports = modulePackage;
