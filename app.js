@@ -5,6 +5,7 @@ var helpers    = require('./helpers');
 const { dialogflow } = require('actions-on-google');
 const app = dialogflow();
 
-app.intent('status_update', helpers.convStatusUpdate);
+app.intent('status_updates', helpers.convStatusUpdates);
+app.intent('lines', helpers.convLines);
 
 express().use(bodyParser.json(), app).listen(process.env.PORT)

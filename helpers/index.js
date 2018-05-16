@@ -18,15 +18,23 @@ function getSeverity() {
     .then(body => body.filter(({modeName}) => modeName !== 'tube'))
 }
 
-function getSeverityDesc(arr, level){
-  let {description} = arr.find(({severityLevel}) => severityLevel === level);
-  return description;
-}
-
 function getStatus() {
   rpOption.uri = '/Line/Mode/tube/Status';
   return rp(rpOption)
 }
+
+function getLines() {
+  let modes = 'tube';
+  rpOption.uri = `/Line/Mode/${modes}`;
+  return rp(rpOption)
+}
+
+function getTubeSeverityDesc(arr, level){
+  let {description} = arr.find(({severityLevel}) => severityLevel === level);
+  return description;
+}
+
+
 
 //return a map with key=Status value=lines
 function summarizedStatus(lines) {
@@ -47,7 +55,7 @@ function generatedStatusPanel(lines){
     return acc;
   }, []);  
   return new Table({
-    tile: 'Status Update',
+    title: 'Status Update',
     dividers: true,
     columns: ['Line', 'Status'],
     rows: statusUpdate,
@@ -58,7 +66,7 @@ function generatedStatusPanel(lines){
   });
 }
 
-modulePackage.convStatusUpdate = async (conv) => {
+modulePackage.convStatusUpdates = async (conv) => {
 
   try { 
     let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
@@ -83,17 +91,20 @@ modulePackage.convStatusUpdate = async (conv) => {
   }
 }
 
+modulePackage.convLines = async (conv) => {
+ try {
+   let lines = await getLines();
+   lines.map(({name}) => name); // only extract line name
+   conv.ask(`There are ${lines.length} tube lines in London which are ${lines.join(' ')}`);
+   conv.ask(new Table({
+     title: 'Tube Lines',
+     dividers: true,
+     columns: ['name'],
+     rows: lines
+   }));
+ } catch(e) {
+   conv.ask('Sorry I cannot tell you that answer at the moment');
+ } 
+}
+
 module.exports = modulePackage;
-
-/*const visualResult = (delays, conv) => {
-  conv.ask(new BasicCard({
-    title: `${tube_line} line Update`,
-    text: statusSeverityDescription,
-    buttons: new Button({
-      title: 'More on tfl website',
-      url:'https://tfl.gov.uk/tube-dlr-overground/status/'
-    })
-  }))
-};
-*/
-
