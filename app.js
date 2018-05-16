@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-const helpers = require('./helpers');
+const helpers = require('./helpers/index.js');
 
 const { dialogflow } = require('actions-on-google');
 const app = dialogflow();
