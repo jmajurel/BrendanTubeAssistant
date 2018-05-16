@@ -1,4 +1,5 @@
 var rp = require('request-promise-native');
+const { List } = require('actions-on-google');
 
 let modulePackage = {};
 
@@ -38,21 +39,31 @@ async function summarizedStatus() {
   }, new Map());
 }
 
-modulePackage.convStatusUpdate = async (conv) => {
-  
-  let updates = await summarizedStatus();
-  let sentence = ''; 
-  if(updates.length > 1){
-    sentence = 'There are ';
-    for(let [status, lines] of updates){
-      sentence += `${status} on ${lines}`;
-    }
-  } else {
-    let [UniqueStatus] = updates;
-    sentence = `There is ${UniqueStatus[0]} on all lines`;
-  }
+function generatedStatusPanel(statuses){
+  let lineStatus = statuses.reduce((items, ({name, lineStatuses}))=>{
+    statusDescription = lineStatuses.map(({description}) => description).join(', ');
+    return acc.set(name, statusDescription);
+  }, new Map());  
+  return new List('Status updates', items);
+}
 
-  conv.ask(sentence);
+modulePackage.convStatusUpdate = async (conv) => {
+  try { 
+    let updates = await summarizedStatus();
+    let sentence = ''; 
+    if(updates.length > 1){
+      sentence = 'There are ';
+      for(let [status, lines] of updates){
+	sentence += `${status} on ${lines}`;
+      }
+    } else {
+      let [uniqueStatus] = updates;
+      sentence = `There is ${uniqueStatus[0]} on all lines`;
+    }
+    conv.ask(sentence);
+  } catch {
+    conv.ask('Sorry I cannot get the tube update at the moment');
+  }
 }
 
 module.exports = modulePackage;
