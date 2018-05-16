@@ -74,6 +74,7 @@ modulePackage.convStatusUpdate = async (conv) => {
     conv.ask(sentence);
     conv.ask(panel);
   } catch(e) {
+    console.log(e);
     conv.ask('Sorry I cannot get the tube update at the moment');
   }
 }
