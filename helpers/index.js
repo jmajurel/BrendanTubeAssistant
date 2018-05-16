@@ -78,11 +78,11 @@ modulePackage.convStatusUpdates = async function(conv) {
     if(updates.length > 1){
       sentence = 'There are ';
       for(let [status, lines] of updates){
-	sentence += `<emphasis level="strong">${status} on ${lines}</emphasis>`;
+	sentence += ssml`<emphasis level="strong">${status} on ${lines}</emphasis>`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = `There is <emphasis level="strong">${uniqueStatus[0]} on all lines</emphasis>`;
+      sentence = ssml`There is <emphasis level="strong">${uniqueStatus[0]} on all lines</emphasis>`;
     }
     conv.ask(ssml`
 	<speak>
