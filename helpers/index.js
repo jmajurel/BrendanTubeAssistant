@@ -32,17 +32,17 @@ async function summarizedStatus() {
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity}) => {
       let description = getSeverityDesc(severity, statusSeverity);
-      summary[description] += ` ${name}`;
+      summary.has(description) ? summary.set(description, `${summary.get(description)} ${name}`) : summary.set(description, name);
     });
     return summary;
-  }, {});
+  }, new Map());
 }
 
 modulePackage.convStatusUpdate = async (conv) => {
   
   let updates = await summarizedStatus();
-  let sentence =  Object.keys(updates).length > 1 ? 'There are ' : 'There is ';
-  for({status, lines} of updates){
+  let sentence =  updates.length > 1 ? 'There are ' : 'There is ';
+  for(let [status, lines] of updates){
     sentence += `${status} on ${lines}`;
   }
 
