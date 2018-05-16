@@ -1,7 +1,7 @@
 'use strict'
 
 const rp = require('request-promise-native');
-const  {ssml} = require('./utils');
+const {ssml} = require('./utils');
 
 const { Table, Button } = require('actions-on-google');
 
