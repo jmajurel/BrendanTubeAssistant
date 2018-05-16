@@ -15,8 +15,6 @@ const rpOption = {
   json: true
 };
 
-var modulePackage = {};
-
 function getSeverity() {
   rpOption.uri = '/Line/Meta/Severity';
   return rp(rpOption)
