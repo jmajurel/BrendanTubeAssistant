@@ -41,9 +41,15 @@ async function summarizedStatus() {
 modulePackage.convStatusUpdate = async (conv) => {
   
   let updates = await summarizedStatus();
-  let sentence =  updates.length > 1 ? 'There are ' : 'There is ';
-  for(let [status, lines] of updates){
-    sentence += `${status} on ${lines}`;
+  let sentence = ''; 
+  if(updates.length > 1){
+    sentence = 'There are ';
+    for(let [status, lines] of updates){
+      sentence += `${status} on ${lines}`;
+    }
+  } else {
+    let [status] = updates;
+    sentence = `There is ${status} on all lines`;
   }
 
   conv.ask(sentence);
