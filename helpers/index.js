@@ -43,8 +43,7 @@ function generatedStatusPanel(lines){
 
   let panel = new Table({
     dividers: true,
-    columns: ['Line', 'Status'],
-    rows: []
+    columns: ['Line', 'Status']
   });
 
   return lines.reduce(panel, ({name: lineName, lineStatuses}) =>{
