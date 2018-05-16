@@ -3,7 +3,7 @@
 const rp = require('request-promise-native');
 const {ssml} = require('./utils.js');
 
-const { Table, Button } = require('actions-on-google');
+const {Table, Button} = require('actions-on-google');
 
 const rpOption = {
   baseUrl: 'https://api.tfl.gov.uk/',
@@ -93,7 +93,7 @@ const convStatusUpdates = async (conv) => {
     console.log(e);
     conv.ask('Sorry I cannot get the tube update at the moment');
   }
-}
+};
 
 const convLines = async (conv) => {
 
@@ -114,6 +114,6 @@ const convLines = async (conv) => {
   } catch(e) {
     conv.ask('Sorry I cannot tell you that answer at the moment');
   } 
-}
+};
 
 module.exports = {convLines, convStatusUpdates};
