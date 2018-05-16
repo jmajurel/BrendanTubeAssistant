@@ -1,5 +1,5 @@
 var rp = require('request-promise-native');
-const { List } = require('actions-on-google');
+const { Table } = require('actions-on-google');
 
 let modulePackage = {};
 
@@ -28,28 +28,39 @@ function getStatus() {
   return rp(rpOption)
 }
 
-async function summarizedStatus() {
-  let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
+//return a map with key=Status value=lines
+function summarizedStatus(lines) {
   return lines.reduce((summary, {name, lineStatuses}) => {
-    lineStatuses.forEach(({statusSeverity}) => {
-      let description = getSeverityDesc(severity, statusSeverity);
-      summary.has(description) ? summary.set(description, `${summary.get(description)} ${name}`) : summary.set(description, name);
+    lineStatuses.forEach(({statusSeverity, statusSeverityDescription: statusDesc}) => {
+      summary.has(statusDesc) ? summary.set(statusDesc, `${summary.get(statusDesc)} ${name}`) : summary.set(statusDesc, name);
     });
     return summary;
   }, new Map());
 }
 
-function generatedStatusPanel(statuses){
-  let lineStatus = statuses.reduce((items, ({name, lineStatuses}))=>{
-    statusDescription = lineStatuses.map(({description}) => description).join(', ');
-    return acc.set(name, statusDescription);
-  }, new Map());  
-  return new List('Status updates', items);
+//return a Table object containing the status update
+function generatedStatusPanel(lines){
+
+  let panel = new Table({
+    dividers: true,
+    columns: ['Line', 'Status'],
+    rows: []
+  });
+
+  return lines.reduce(panel, ({name: lineName, lineStatuses}) =>{
+    let statusDesc = lineStatuses.map(({description}) => description).join(', ');
+    panel.rows.push([lineName, sstatusDesc]);
+    return panel;
+  }, panel);  
 }
 
 modulePackage.convStatusUpdate = async (conv) => {
+
   try { 
-    let updates = await summarizedStatus();
+    let [severity, lines] = await Promise.all([getSeverity(), getStatus()]);
+    let updates = summarizedStatus(lines);
+    let panel = generatedStatusPanel(lines);
+
     let sentence = ''; 
     if(updates.length > 1){
       sentence = 'There are ';
@@ -61,7 +72,8 @@ modulePackage.convStatusUpdate = async (conv) => {
       sentence = `There is ${uniqueStatus[0]} on all lines`;
     }
     conv.ask(sentence);
-  } catch {
+    conv.ask(panel);
+  } catch(e) {
     conv.ask('Sorry I cannot get the tube update at the moment');
   }
 }
