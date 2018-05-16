@@ -76,13 +76,16 @@ modulePackage.convStatusUpdates = async (conv) => {
     if(updates.length > 1){
       sentence = 'There are ';
       for(let [status, lines] of updates){
-	sentence += `${status} on ${lines}`;
+	sentence += `<emphasis level="strong">${status} on ${lines}</emphasis>`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = `There is ${uniqueStatus[0]} on all lines`;
+      sentence = `There is <emphasis level="strong">${uniqueStatus[0]} on all lines</emphasis>`;
     }
-    conv.ask(sentence);
+    conv.ask(`
+	<speak>
+	  ${sentence}
+	</speak>`);
     conv.ask(panel);
 
   } catch(e) {
@@ -95,7 +98,11 @@ modulePackage.convLines = async (conv) => {
   try {
     let lines = await getLines();
     lines = lines.map(({name}) => name);
-    conv.ask(`There are ${lines.length} tube lines in London which are ${lines.join(' ')}`);
+    conv.ask(`
+	<speak>
+	  There are <say-as interpret-as="unit">${lines.length} tube lines</say-as> in London which are ${lines.join(' ')}
+	</speak>
+	`);
     conv.ask(new Table({
       title: 'Tube Lines',
       dividers: true,
