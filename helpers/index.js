@@ -94,7 +94,8 @@ modulePackage.convStatusUpdates = async (conv) => {
 modulePackage.convLines = async (conv) => {
  try {
    let lines = await getLines();
-   conv.ask(`There are ${lines.length} tube lines in London which are ${lines.map(({name}) => name).join(' ')}`);
+   lines = lines.map(({name}) => name);
+   conv.ask(`There are ${lines.length} tube lines in London which are ${lines.join(' ')}`);
    conv.ask(new Table({
      title: 'Tube Lines',
      dividers: true,
