@@ -9,7 +9,7 @@ const callers = require('../helpers/callers.js');
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
-const features = ['Update', 'Future'];
+const features = ['update', 'lines'];
 
 //UC1 tube status update
 modulePackage.statusUpdates = async (conv) => {
@@ -34,7 +34,7 @@ modulePackage.statusUpdates = async (conv) => {
 
     //conversation reply
 
-    conv.ask(sentence);
+    conv.ask(ssml(sentence));
 
     //visual rely
     conv.ask(panel); 
