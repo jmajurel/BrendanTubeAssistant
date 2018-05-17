@@ -26,7 +26,7 @@ modulePackage.getTubeSeverityDesc = function(arr, level){
 }
 
 //return a map with key=Status value=lines
-modulePackage.summarizedStatus function(lines){
+modulePackage.summarizedStatus = function(lines){
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity, statusSeverityDescription: statusDesc}) => {
       summary.has(statusDesc) ? summary.set(statusDesc, `${summary.get(statusDesc)} ${name}`) : summary.set(statusDesc, name);
