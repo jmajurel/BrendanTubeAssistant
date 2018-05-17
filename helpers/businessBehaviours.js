@@ -25,11 +25,17 @@ modulePackage.getTubeSeverityDesc = function(arr, level){
   return description;
 }
 
-//return a map with key=Status value=lines
+//return a map with key=Status value=[lines]
+//example: key='major delays', values=['piccadilly', 'district']
+//
 modulePackage.summarizedStatus = function(lines){
   return lines.reduce((summary, {name, lineStatuses}) => {
     lineStatuses.forEach(({statusSeverity, statusSeverityDescription: statusDesc}) => {
-      summary.has(statusDesc) ? summary.set(statusDesc, `${summary.get(statusDesc)} ${name}`) : summary.set(statusDesc, name);
+      if(summary.has(statusDesc)){
+	summary.get(statusDesc).push(name);
+      } else {
+        summary.set(statusDesc, [name]);
+      }	
     });
     return summary;
   }, new Map());

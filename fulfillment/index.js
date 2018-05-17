@@ -2,14 +2,14 @@
 
 const {Table, Button, Suggestions} = require('actions-on-google');
 
-const {ssml} = require('../helpers/utils.js');
+const {ssml, insertSsmlBreak} = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
 
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
-const features = ['status update', 'future update'];
+const features = ['Update', 'Future'];
 
 //UC1 tube status update
 modulePackage.statusUpdates = async (conv) => {
@@ -18,20 +18,22 @@ modulePackage.statusUpdates = async (conv) => {
     let [severity, lines] = await Promise.all([callers.getSeverity(), callers.getStatus()]);
     let updates = businessB.summarizedStatus(lines);
     let panel = businessB.generatedStatusPanel(lines);
-    let sentence = ''; 
+    let sentence = ssml`<p>There are`;
     if(updates.length > 1){
-      sentence = 'There are ';
       for(let [status, lines] of updates){
-	sentence += `${status} on ${lines}`;
+	sentence += ssml`<s><emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}</s>`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = `There is ${uniqueStatus[0]} on all lines`;
+      sentence = ssml`<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
     }
+    sentence += ssml`</p>`
+
     conv.ask(ssml`
 	<speak>
-	  <emphasis level="strong">${sentence}</emphasis>
+	  ${sentence}
 	</speak>`);
+
     conv.ask(panel);
 
   } catch(e) {

@@ -8,6 +8,7 @@ const app = dialogflow();
 
 app.intent('status_updates', brendan.statusUpdates); //UC1
 app.intent('lines', brendan.lines);
+
 app.intent('Default Fallback Intent', brendan.defaultFallback);
 app.intent('Default Welcome Intent', brendan.welcome);
 
