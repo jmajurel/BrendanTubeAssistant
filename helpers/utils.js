@@ -1,6 +1,5 @@
 'use strict';
 
-const breakTag = '<break>'
 
 const ssml = (template, ...inputs) => {
   // Generate the raw escaped string
@@ -26,7 +25,7 @@ const ssml = (template, ...inputs) => {
 };
 
 const insertSsmlBreak = (arr) => {
-  return arr.join('<break>');
+  return arr.join('<break/>');
 };
 
 module.exports = {ssml, insertSsmlBreak};
