@@ -29,12 +29,10 @@ modulePackage.statusUpdates = async (conv) => {
       let [uniqueStatus] = updates;
       sentence = `<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
     }
-    sentence += ssml`</p>`
+    sentence += `</p>`
 
-    conv.ask(ssml`
-	<speak>
-	  ${ssmlsentence}
-	</speak>`);
+   //conversation reply
+    conv.ask(ssml`<speak>${sentence}</speak>`);
 
     conv.ask(panel); //visual response
 
@@ -53,6 +51,7 @@ modulePackage.lines = async (conv) => {
     let lines = await callers.getLines();
     lines = insertSsmlBreak(lines.map(({name}) => name));
 
+   //conversation reply
     conv.ask(ssml`
 	<speak>
 	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${lines}
