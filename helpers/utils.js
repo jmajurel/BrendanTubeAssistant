@@ -25,7 +25,8 @@ const ssml = (template, ...inputs) => {
 };
 
 const insertSsmlBreak = (arr) => {
-  return arr.join('<break/>');
+  let res = arr.join('<break/>');
+  return ssml`${res}`;
 };
 
 module.exports = {ssml, insertSsmlBreak};
