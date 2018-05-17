@@ -20,19 +20,20 @@ modulePackage.statusUpdates = async (conv) => {
     let panel = businessB.generatedStatusPanel(lines);
 
     /* Build sentence for Brendan */
-    let sentence = ssml`<p>There are`;
+    let sentence = `<p>There are`;
     if(updates.length > 1){
       for(let [status, lines] of updates){
-	sentence += ssml`<s><emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}</s>`;
+	sentence += `<s><emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}</s>`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = ssml`<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
+      sentence = `<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
     }
-    sentence += ssml`</p>`
+    sentence += `</p>`;
+    sentence = (sentence);
 
     //conversation reply
-    conv.ask(ssml`<speak>${sentence}</speak>`);
+    conv.ask(`<speak>${sentence}</speak>`);
 
     //visual rely
     conv.ask(panel); 
@@ -53,7 +54,7 @@ modulePackage.lines = async (conv) => {
     lines = insertSsmlBreak(lines.map(({name}) => name));
 
     //conversation reply
-    conv.ask(ssml`
+    conv.ask(`
 	<speak>
 	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${lines}
 	</speak>`);
