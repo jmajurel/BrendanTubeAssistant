@@ -9,7 +9,7 @@ const callers = require('../helpers/callers.js');
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
-const features = ['status update', 'status update at future date'];
+const features = ['status update', 'future update'];
 
 //UC1 tube status update
 modulePackage.statusUpdates = async (conv) => {
