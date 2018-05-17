@@ -27,7 +27,7 @@ modulePackage.statusUpdates = async (conv) => {
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence += `<s><emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
+      sentence += `<emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines`;
     }
     sentence += `</p>`;
 
@@ -52,7 +52,8 @@ modulePackage.lines = async (conv) => {
   try {
     var lines = await callers.getLines();
 
-    let linesStr = ssml`${insertSsmlBreak(lines.map(({name}) => name))}`;
+    let linesStr = insertSsmlBreak(lines.map(({name}) => name));
+    sanatized = ssml`${linesStr}`;
 
     //conversation reply
     conv.ask(`<speak>
