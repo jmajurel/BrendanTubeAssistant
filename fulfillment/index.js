@@ -50,12 +50,12 @@ modulePackage.statusUpdates = async (conv) => {
 modulePackage.lines = async (conv) => {
 
   try {
-    let lines = await callers.getLines();
+    var lines = await callers.getLines();
 
     let linesStr = insertSsmlBreak(lines.map(({name}) => name));
 
     //conversation reply
-    conv.ask(`
+    conv.ask(ssml`
 	<speak>
 	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${linesStr}
 	</speak>`);
