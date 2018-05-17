@@ -39,7 +39,9 @@ modulePackage.statusUpdates = async (conv) => {
   } catch(e) {
     console.log(e);
     conv.ask('Sorry I cannot get the tube update at the moment');
+    conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   }
+  conv.ask(new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 //UCX provide tube lines list
@@ -48,11 +50,12 @@ modulePackage.lines = async (conv) => {
   try {
     let lines = await callers.getLines();
     lines = lines.map(({name}) => name);
+
     conv.ask(ssml`
 	<speak>
-	  There are <say-as interpret-as="unit">${lines.length} tube lines</say-as> in London which are ${lines.join(' ')}
-	</speak>
-	`);
+	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${lines.join(' ')}
+	</speak>`);
+
     conv.ask(new Table({
       title: 'Tube Lines',
       dividers: true,
@@ -62,18 +65,22 @@ modulePackage.lines = async (conv) => {
   } catch(e) {
     console.log(e);
     conv.ask('Sorry I cannot tell you that answer at the moment');
+    conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   } 
+  conv.ask(new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 //welcome intent handler 
 modulePackage.welcome = (conv) => {
-  conv.ask('Hi there, I am Brendan the tube expert in London');
-  conv.ask(new Suggestions(...features));
+  conv.ask('Hi there, I am Brendan the tube expert in London'); //greating welcome message
+  conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
+  conv.ask(new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 //default intent handler 
 modulePackage.defaultFallback = (conv) => {
   conv.ask('Sorry dear traveller, I didn\'t catch it');
+  conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   conv.ask(new Suggestions(...features));
 };
 
