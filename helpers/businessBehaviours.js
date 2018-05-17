@@ -1,6 +1,6 @@
 'use strict';
 
-const {Table} = require('actions-on-google');
+const {Table, Button} = require('actions-on-google');
 
 /* Basic Business behaviours */
 
