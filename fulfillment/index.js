@@ -52,13 +52,11 @@ modulePackage.lines = async (conv) => {
     var lines = await callers.getLines();
 
     let linesStr = insertSsmlBreak(lines.map(({name}) => name));
-    let sanatized = ssml`${linesStr}`;
 
     //conversation reply
     conv.ask(`<speak>
-	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${sanatized}
-	</speak>
-	`);
+	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${linesStr.replace('&','&amp')}
+	</speak>`);
 
     //visual reply
     conv.ask(new Table({
