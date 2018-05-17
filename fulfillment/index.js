@@ -22,15 +22,15 @@ modulePackage.statusUpdates = async (conv) => {
     if(updates.length > 1){
       sentence = 'There are ';
       for(let [status, lines] of updates){
-	sentence += `<emphasis level="strong">${status} on ${lines}</emphasis>`;
+	sentence += `${status} on ${lines}`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = `There is <emphasis level="strong">${uniqueStatus[0]} on all lines</emphasis>`;
+      sentence = `There is ${uniqueStatus[0]} on all lines`;
     }
     conv.ask(ssml`
 	<speak>
-	  ${sentence}
+	  <emphasis level="strong">${sentence}</emphasis>
 	</speak>`);
     conv.ask(panel);
 
