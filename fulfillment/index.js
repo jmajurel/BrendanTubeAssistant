@@ -18,23 +18,25 @@ modulePackage.statusUpdates = async (conv) => {
     let [severity, lines] = await Promise.all([callers.getSeverity(), callers.getStatus()]);
     let updates = businessB.summarizedStatus(lines);
     let panel = businessB.generatedStatusPanel(lines);
-    let sentence = ssml`<p>There are`;
+
+    /* Build sentence for Brendan */
+    let sentence = `<p>There are`;
     if(updates.length > 1){
       for(let [status, lines] of updates){
-	sentence += ssml`<s><emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}</s>`;
+	sentence += `<s><emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}</s>`;
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence = ssml`<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
+      sentence = `<s>There is <emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines</s>`;
     }
     sentence += ssml`</p>`
 
     conv.ask(ssml`
 	<speak>
-	  ${sentence}
+	  ${ssmlsentence}
 	</speak>`);
 
-    conv.ask(panel);
+    conv.ask(panel); //visual response
 
   } catch(e) {
     console.log(e);
@@ -49,11 +51,11 @@ modulePackage.lines = async (conv) => {
 
   try {
     let lines = await callers.getLines();
-    lines = lines.map(({name}) => name);
+    lines = insertSsmlBreak(lines.map(({name}) => name));
 
     conv.ask(ssml`
 	<speak>
-	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${lines.join(' ')}
+	  There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${lines}
 	</speak>`);
 
     conv.ask(new Table({
