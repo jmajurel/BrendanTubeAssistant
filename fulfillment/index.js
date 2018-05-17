@@ -34,7 +34,7 @@ modulePackage.statusUpdates = async (conv) => {
 
     //conversation reply
 
-    conv.ask(ssml(sentence));
+    conv.ask(sentence);
 
     //visual rely
     conv.ask(panel); 
