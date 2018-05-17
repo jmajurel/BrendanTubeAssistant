@@ -58,6 +58,7 @@ modulePackage.lines = async (conv) => {
       rows: [lines]
     }));
   } catch(e) {
+    console.log(e);
     conv.ask('Sorry I cannot tell you that answer at the moment');
   } 
 };
@@ -65,13 +66,13 @@ modulePackage.lines = async (conv) => {
 //welcome intent handler 
 modulePackage.welcome = (conv) => {
   conv.ask('Hi there, I am Brendan the tube expert in London');
-  conv.ask(new Suggestions(features));
+  conv.ask(new Suggestions(...features));
 };
 
 //default intent handler 
 modulePackage.defaultFallback = (conv) => {
   conv.ask('Sorry dear traveller, I didn\'t catch it');
-  conv.ask(new Suggestions(features));
+  conv.ask(new Suggestions(...features));
 };
 
 module.exports = modulePackage;
