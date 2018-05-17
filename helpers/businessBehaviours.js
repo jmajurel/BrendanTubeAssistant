@@ -14,10 +14,10 @@ modulePackage.getTubeSeverity = async function() {
 modulePackage.getFutureStatusForAllLines = async function(startDate, endDate){
   try {
     let lines = await getLines();
+    return Promise.all(lines.map(({name: lineName}) => getFutureStatusForOneLine(lineName)));
   } catch(e) {
     console.log(e); 
   }
-  return Promise.all(lines.map(({name: lineName}) => return getFutureStatusForOneLine(lineName)));
 }
 
 modulePackage.getTubeSeverityDesc = function(arr, level){
