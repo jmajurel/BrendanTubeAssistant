@@ -56,7 +56,7 @@ modulePackage.lines = async (conv) => {
 
     //conversation reply
     conv.ask(`<speak>
-	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${insertSsmlBreak(lines)}
+	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${insertSsmlBreak(lines, 80)}
 	</speak>`);
 
     //visual reply
