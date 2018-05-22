@@ -23,7 +23,7 @@ modulePackage.statusUpdates = async (conv) => {
     let sentence = `<s>There are`;
     if(updates.size > 1){
       for(let [status, lines] of updates){
-	sentence += `<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
+	sentence += ssml`<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
       }
     } else {
       let [uniqueStatus] = updates;
