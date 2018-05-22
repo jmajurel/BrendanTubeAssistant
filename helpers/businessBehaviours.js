@@ -33,7 +33,8 @@ modulePackage.summarizedStatus = function(lines){
     lineStatuses.forEach(({statusSeverity, statusSeverityDescription: statusDesc}) => {
       if(summary.has(statusDesc)){
 	var currentVal = summary.get(statusDesc);
-	summary.set(statusDesc, currentVal.push(name));
+        currentVal.push(name)
+	summary.set(statusDesc, currentVal);
       } else {
         summary.set(statusDesc, [name]);
       }	
