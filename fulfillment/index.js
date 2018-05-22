@@ -21,7 +21,7 @@ modulePackage.statusUpdates = async (conv) => {
 
     /* Build sentence for Brendan */
     let sentence = `<s>There are`;
-    if(updates.length > 1){
+    if(updates.size > 1){
       for(let [status, lines] of updates){
 	sentence += `<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
       }
