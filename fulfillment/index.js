@@ -2,7 +2,7 @@
 
 const {Table, Button, Suggestions} = require('actions-on-google');
 
-const {ssml, insertSsmlBreak} = require('../helpers/utils.js');
+const {sanitiseForSsml, insertSsmlBreak} = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
 
@@ -23,7 +23,9 @@ modulePackage.statusUpdates = async (conv) => {
     let sentence = `<s>There are`;
     if(updates.size > 1){
       for(let [status, lines] of updates){
-	sentence += ssml`<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
+	lines = sanitiseForSsml(lines);
+
+	sentence += `<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
       }
     } else {
       let [uniqueStatus] = updates;
@@ -50,12 +52,11 @@ modulePackage.lines = async (conv) => {
 
   try {
     var lines = await callers.getLines();
-
-    let linesStr = insertSsmlBreak(lines.map(({name}) => name));
+    lines = sanitiseForSsml(lines.map(({name}) => name));
 
     //conversation reply
-    conv.ask(ssml`<speak>
-	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${linesStr}
+    conv.ask(`<speak>
+	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${insertSsmlBreak(lines)}
 	</speak>`);
 
     //visual reply

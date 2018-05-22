@@ -28,4 +28,15 @@ const insertSsmlBreak = (arr) => {
   return arr.join('<break/>');
 };
 
-module.exports = {ssml, insertSsmlBreak};
+const sanitiseForSsml = (arr) => {
+  return arr.map(item => {
+     item
+       .replace(/&/g, '&amp;')
+       .replace(/</g, '&lt;')
+       .replace(/>/g, '&gt;')
+       .replace(/"/g, '&quot;')
+     return item;
+  })
+};
+
+module.exports = {ssml, insertSsmlBreak, sanitiseForSsml };
