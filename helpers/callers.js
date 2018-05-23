@@ -12,7 +12,6 @@ const rpOptionTFL = {
   json: true
 };
 
-?key=AIzaSyCqobKGXv_upHbIukx_NQT4o2FdcE7s1Jg"
 const rpOptionGEO = {
   baseUrl:'https://www.googleapis.com/geolocation/v1/geolocate',
   qs: {
