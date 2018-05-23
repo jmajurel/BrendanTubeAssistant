@@ -1,6 +1,7 @@
 'use strict';
 
 const {Table, Button, Suggestions} = require('actions-on-google');
+const ssml = require('ssml');
 
 const {sanitiseForSsml, insertSsmlBreak} = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
@@ -20,21 +21,22 @@ modulePackage.statusUpdates = async (conv) => {
     let panel = businessB.generatedStatusPanel(lines);
 
     /* Build sentence for Brendan */
-    let sentence = `<s>There are`;
+    let brendan = new ssml();
+
+    brendan.says('There are');
+
     if(updates.size > 1){
       for(let [status, lines] of updates){
 	lines = sanitiseForSsml(lines);
-
-	sentence += `<emphasis level="moderate">${status}</emphasis> on the ${insertSsmlBreak(lines)}`;
+        brendan.says(`${status} on ${insertSsmlBreak(lines, 80)}`);
       }
     } else {
       let [uniqueStatus] = updates;
-      sentence += `<emphasis level="moderate">${uniqueStatus[0]}</emphasis> on all lines`;
+      brendan.says(`${uniqueStatus[0]} on all lines`);
     }
-    sentence += `</s>`;
 
     //conversation reply
-    conv.ask(`<speak>${sentence}</speak>`);
+    conv.ask(brendan);
 
     //visual rely
     conv.ask(panel); 
@@ -52,12 +54,18 @@ modulePackage.lines = async (conv) => {
 
   try {
     var lines = await callers.getLines();
-    lines = sanitiseForSsml(lines.map(({name}) => name));
+    var sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
+    let brendan = new ssml();
+
+    brendan.says('There are')
+      .says({
+        text: `${lines.length}`,
+        interpretAs: 'cardinal'
+      })
+      .says(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
 
     //conversation reply
-    conv.ask(`<speak>
-	There are <say-as interpret-as="cardinal">${lines.length}</say-as> tube lines in London which are ${insertSsmlBreak(lines, 80)}
-	</speak>`);
+    conv.ask(brendan);
 
     //visual reply
     conv.ask(new Table({
@@ -72,6 +80,7 @@ modulePackage.lines = async (conv) => {
     conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   } 
   conv.ask(new Suggestions(...features)); //suggestion chips for visual interface
+  conv.ask('Additionaly, I can give you the status update'); //drive the conversation to available intents
 };
 
 //welcome intent handler 
