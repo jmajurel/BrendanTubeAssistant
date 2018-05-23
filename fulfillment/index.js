@@ -28,11 +28,11 @@ modulePackage.statusUpdates = async (conv) => {
     if(updates.size > 1){
       for(let [status, lines] of updates){
 	lines = sanitiseForSsml(lines);
-        brendan.say(`${status} on ${insertSsmlBreak(lines, 80)}`);
+        brendan.say(` ${status} on ${insertSsmlBreak(lines, 80)}`);
       }
     } else {
       let [uniqueStatus] = updates;
-      brendan.say(`${uniqueStatus[0]} on all lines`);
+      brendan.say(` ${uniqueStatus[0]} on all lines`);
     }
 
     //conversation reply
@@ -53,8 +53,8 @@ modulePackage.statusUpdates = async (conv) => {
 modulePackage.lines = async (conv) => {
 
   try {
-    var lines = await callers.getLines();
-    var sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
+    let lines = await callers.getLines();
+    let sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
     let brendan = new ssml();
 
     brendan.say('There are')
@@ -62,18 +62,18 @@ modulePackage.lines = async (conv) => {
         text: `${lines.length}`,
         interpretAs: 'cardinal'
       })
-      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
+      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`);
 
     //conversation reply
     conv.ask(brendan.toString({ full:true, minimal: true }));
 
-    //visual reply
+/*    //visual reply
     conv.ask(new Table({
       title: 'Tube Lines',
       dividers: true,
       columns: ['name'],
       rows: [lines]
-    }));
+    }));*/
   } catch(e) {
     console.log(e);
     conv.ask('Sorry I cannot tell you that answer at the moment');
