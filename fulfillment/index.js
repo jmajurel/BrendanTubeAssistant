@@ -23,16 +23,16 @@ modulePackage.statusUpdates = async (conv) => {
     /* Build sentence for Brendan */
     let brendan = new ssml();
 
-    brendan.says('There are');
+    brendan.say('There are');
 
     if(updates.size > 1){
       for(let [status, lines] of updates){
 	lines = sanitiseForSsml(lines);
-        brendan.says(`${status} on ${insertSsmlBreak(lines, 80)}`);
+        brendan.say(`${status} on ${insertSsmlBreak(lines, 80)}`);
       }
     } else {
       let [uniqueStatus] = updates;
-      brendan.says(`${uniqueStatus[0]} on all lines`);
+      brendan.say(`${uniqueStatus[0]} on all lines`);
     }
 
     //conversation reply
@@ -57,12 +57,12 @@ modulePackage.lines = async (conv) => {
     var sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
     let brendan = new ssml();
 
-    brendan.says('There are')
-      .says({
+    brendan.say('There are')
+      .say({
         text: `${lines.length}`,
         interpretAs: 'cardinal'
       })
-      .says(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
+      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
 
     //conversation reply
     conv.ask(brendan);
