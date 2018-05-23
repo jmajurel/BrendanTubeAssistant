@@ -36,7 +36,7 @@ modulePackage.statusUpdates = async (conv) => {
     }
 
     //conversation reply
-    conv.ask(brendan);
+    conv.ask(brendan.toString({ full:true, minimal: true }));
 
     //visual rely
     conv.ask(panel); 
@@ -65,7 +65,7 @@ modulePackage.lines = async (conv) => {
       .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
 
     //conversation reply
-    conv.ask(brendan);
+    conv.ask(brendan.toString({ full:true, minimal: true }));
 
     //visual reply
     conv.ask(new Table({
