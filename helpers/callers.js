@@ -3,7 +3,7 @@
 const rp = require('request-promise-native');
 /* API calls */
 
-const rpOption = {
+const rpOptionTFL = {
   baseUrl: 'https://api.tfl.gov.uk/',
   qs: {
     app_id: process.env.TFLAppId,
@@ -12,27 +12,45 @@ const rpOption = {
   json: true
 };
 
+?key=AIzaSyCqobKGXv_upHbIukx_NQT4o2FdcE7s1Jg"
+const rpOptionGEO = {
+  baseUrl:'https://www.googleapis.com/geolocation/v1/geolocate',
+  qs: {
+    key: process.env.GeoAPIKey
+  },
+  json: true
+};
+
 let modulePackage = {};
 const transportMode = 'tube';
 
 modulePackage.getSeverity = function(){
-  rpOption.uri = '/Line/Meta/Severity';
-  return rp(rpOption)
+  rpOptionTFL.uri = '/Line/Meta/Severity';
+  return rp(rpOptionTFL)
 }
 
 modulePackage.getStatus = function(){
-  rpOption.uri = `/Line/Mode/${transportMode}/Status`; 
-  return rp(rpOption);
+  rpOptionTFL.uri = `/Line/Mode/${transportMode}/Status`; 
+  return rp(rpOptionTFL);
 }
 
 modulePackage.getLines = function(){
-  rpOption.uri = `/Line/Mode/${transportMode}`;
-  return rp(rpOption);
+  rpOptionTFL.uri = `/Line/Mode/${transportMode}`;
+  return rp(rpOptionTFL);
 }
 
 modulePackage.getFutureStatusForOneLine = function(line, startDate, endDate){
-  rpOption.uri = `/Line/${line}/Status/${startDate}/to/${endDate}`;
-  return rp(rpOption);
+  rpOptionTFL.uri = `/Line/${line}/Status/${startDate}/to/${endDate}`;
+  return rp(rpOptionTFL);
+}
+
+modulePackage.getCurrLocation = function() {
+  return rp(rpOptionGEO );
+}
+
+modulePackage.getJourney = function(startloc, endLoc){
+  rpOptionTFL.uri = `https://api.tfl.gov.uk/journey/journeyresults/51.525503,-0.0822229/to/SW100nx`;
+  return rp(rpOptionTFL);
 }
 
 module.exports = modulePackage;

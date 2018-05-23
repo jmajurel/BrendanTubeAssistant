@@ -67,13 +67,13 @@ modulePackage.lines = async (conv) => {
     //conversation reply
     conv.ask(brendan.toString({ full:true, minimal: true }));
 
-/*    //visual reply
+    //visual reply
     conv.ask(new Table({
       title: 'Tube Lines',
       dividers: true,
       columns: ['name'],
-      rows: [lines]
-    }));*/
+      rows: [sanitisedLines]
+    }));
   } catch(e) {
     console.log(e);
     conv.ask('Sorry I cannot tell you that answer at the moment');
@@ -96,5 +96,9 @@ modulePackage.defaultFallback = (conv) => {
   conv.ask('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   conv.ask(new Suggestions(...features));
 };
+
+module.journey = async (conv) => {
+  let {location:{lat, lng}} = await callers.getCurrLocation();
+}
 
 module.exports = modulePackage;

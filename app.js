@@ -7,6 +7,7 @@ const brendan = require('./fulfillment');
 const app = dialogflow();
 
 app.intent('status_updates', brendan.statusUpdates); //UC1
+app.intent('journey', brendan.journey);
 app.intent('lines', brendan.lines);
 
 app.intent('Default Fallback Intent', brendan.defaultFallback);
