@@ -13,6 +13,7 @@ const rpOptionTFL = {
 };
 
 const rpOptionGEO = {
+  method:'POST',
   uri:'https://www.googleapis.com/geolocation/v1/geolocate',
   qs: {
     key: process.env.GeoAPIKey
