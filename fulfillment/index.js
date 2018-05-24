@@ -1,6 +1,10 @@
 'use strict';
 
-const {Table, Button, Suggestions} = require('actions-on-google');
+const {
+  Table, 
+  Button, 
+  Suggestions, 
+  Place } = require('actions-on-google');
 const ssml = require('ssml');
 
 const {sanitiseForSsml, insertSsmlBreak} = require('../helpers/utils.js');
@@ -99,8 +103,7 @@ modulePackage.defaultFallback = (conv) => {
 
 //UCX journey
 modulePackage.journey = async (conv) => {
-  let {location:{lat, lng}} = await callers.getCurrLocation();
-  conv.ask(`your location is lat: ${lat} and lng:${lng}`);
+  conv.ask(new Place());
 }
 
 module.exports = modulePackage;
