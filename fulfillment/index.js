@@ -103,7 +103,11 @@ modulePackage.defaultFallback = (conv) => {
 
 //UCX journey
 modulePackage.journey = async (conv) => {
-  conv.ask(new Place());
+  const options = {
+    context: 'Start location for tube journey',
+    prompt: 'Where would you like to start your journey?',
+  };
+  conv.ask(new Place(option));
 }
 
 module.exports = modulePackage;
