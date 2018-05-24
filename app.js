@@ -11,6 +11,7 @@ app.intent('lines', brendan.lines);
 
 app.intent('journey', brendan.journey);
 app.intent('get_location', brendan.get_location);
+app.intent('get_destination', brendan.get_destination);
 
 app.intent('Default Fallback Intent', brendan.defaultFallback);
 app.intent('Default Welcome Intent', brendan.welcome);

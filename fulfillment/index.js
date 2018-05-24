@@ -128,8 +128,9 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     conv.ask("Sorry, I couldn't find where you want to go");
   } else {
-    await getJourney(startPoint, endPoint); 
-
+    let journey = await getJourney(startPoint, endPoint); 
+    console.log(journey);
+    conv.ask('this is your journey');
   }
 }
 
