@@ -44,7 +44,7 @@ modulePackage.getFutureStatusForOneLine = function(line, startDate, endDate){
 }
 
 modulePackage.getCurrLocation = function() {
-  return rp(rpOptionGEO );
+  return rp(rpOptionGEO);
 }
 
 modulePackage.getJourney = function(startloc, endLoc){
