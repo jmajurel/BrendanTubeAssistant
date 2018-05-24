@@ -97,7 +97,7 @@ modulePackage.defaultFallback = (conv) => {
   conv.ask(new Suggestions(...features));
 };
 
-//UC journey
+//UCX journey
 modulePackage.journey = async (conv) => {
   let {location:{lat, lng}} = await callers.getCurrLocation();
   conv.ask(`your location is lat: ${lat} and lng:${lng}`);

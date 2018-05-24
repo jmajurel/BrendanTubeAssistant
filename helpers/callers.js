@@ -48,7 +48,7 @@ modulePackage.getCurrLocation = function() {
 }
 
 modulePackage.getJourney = function(startloc, endLoc){
-  rpOptionTFL.uri = `https://api.tfl.gov.uk/journey/journeyresults/51.525503,-0.0822229/to/SW100nx`;
+  rpOptionGEO.uri = `https://api.tfl.gov.uk/journey/journeyresults/51.525503,-0.0822229/to/SW100nx`;
   return rp(rpOptionTFL);
 }
 
