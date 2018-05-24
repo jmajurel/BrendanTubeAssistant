@@ -134,7 +134,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     console.log(place);
     let startPoint = conv.user.storage.location;
 
-    let journey = await getJourney(startPoint, endPoint); 
+    let journey = await callers.getJourney(startPoint, endPoint); 
     console.log(journey);
     conv.ask('this is your journey');
   }
