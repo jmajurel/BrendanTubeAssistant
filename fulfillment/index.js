@@ -4,6 +4,7 @@ const {
   Table, 
   Button, 
   Suggestions, 
+  Permission,
   Place } = require('actions-on-google');
 const ssml = require('ssml');
 
@@ -102,12 +103,21 @@ modulePackage.defaultFallback = (conv) => {
 };
 
 //UCX journey
-modulePackage.journey = async (conv) => {
-  const options = {
-    context: 'Start location for tube journey',
-    prompt: 'Where would you like to start your journey?',
-  };
-  conv.ask(new Place(option));
+modulePackage.journey = (conv) => {
+  conv.ask(new Permission({
+    context: 'Get current location',
+    permissions: 'DEVICE_PRECISE_LOCATION',
+    }));
+}
+
+modulePackage.get_location = (conv, params, permissionGranted) => {
+  if(!permissionGranted){
+    conv.ask('I need to get your location to calculate your tube journey');
+    conv.ask('Can you give me your permission?');
+  } else {
+    const {coordinates} = conv.device.location;
+    conv.ask(`You are at lat: ${coordinates.latitude} lng: ${coordinates.longitude}`);
+  }
 }
 
 module.exports = modulePackage;
