@@ -130,7 +130,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     conv.ask("Sorry, I couldn't find where you want to go");
   } else {
-    let endPoint = place;
+    let {coordinates: endPoint} = place;
     console.log(place);
     let startPoint = conv.user.storage.location;
 
