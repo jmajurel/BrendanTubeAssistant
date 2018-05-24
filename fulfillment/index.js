@@ -116,6 +116,8 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     conv.ask('Can you give me your permission?');
   } else {
     const {coordinates} = conv.device.location;
+    conv.user.storage.location = coordinates;
+
     conv.ask(`You are at lat: ${coordinates.latitude} lng: ${coordinates.longitude}`);
     conv.ask(new Place({
       prompt: 'What is your destination?',
@@ -128,6 +130,10 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     conv.ask("Sorry, I couldn't find where you want to go");
   } else {
+    let endPoint = place;
+    console.log(place);
+    let startPoint = conv.user.storage.location;
+
     let journey = await getJourney(startPoint, endPoint); 
     console.log(journey);
     conv.ask('this is your journey');
