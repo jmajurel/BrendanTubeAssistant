@@ -13,7 +13,7 @@ const rpOptionTFL = {
 };
 
 const rpOptionGEO = {
-  baseUrl:'https://www.googleapis.com/geolocation/v1/geolocate',
+  uri:'https://www.googleapis.com/geolocation/v1/geolocate',
   qs: {
     key: process.env.GeoAPIKey
   },
@@ -48,7 +48,7 @@ modulePackage.getCurrLocation = function() {
 }
 
 modulePackage.getJourney = function(startloc, endLoc){
-  rpOptionGEO.uri = `https://api.tfl.gov.uk/journey/journeyresults/51.525503,-0.0822229/to/SW100nx`;
+  rpOptionTFL.uri = `https://api.tfl.gov.uk/journey/journeyresults/51.525503,-0.0822229/to/SW100nx`;
   return rp(rpOptionTFL);
 }
 
