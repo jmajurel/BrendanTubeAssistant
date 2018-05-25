@@ -37,7 +37,7 @@ const DEFAULT_FALLBACK = [
 ];
 
 //proxy function that store the previous conversation 
-function ask(conv, inputPrompt, noInputPrompts='') {
+function ask(conv, inputPrompt='', noInputPrompts=null) {
   conv.data.lastPrompt = inputPrompt;
   conv.data.lastNoInputPrompts = noInputPrompts;
   conv.ask(inputPrompt);
@@ -67,17 +67,16 @@ modulePackage.statusUpdates = async (conv) => {
     }
 
     //conversation reply
-    ask(conv, brendan.toString({ full:true, minimal: true }));
+    ask(conv, brendan.toString({ full:true, minimal: true }), panel);
 
     //visual rely
-    ask(conv, panel); 
 
   } catch(e) {
     console.log(e);
     ask(conv, 'Sorry I cannot get the tube update at the moment');
     ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   }
-  ask(conv, new Suggestions(...features)); //suggestion chips for visual interface
+  ask(conv, '', new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 //UCX provide tube lines list
