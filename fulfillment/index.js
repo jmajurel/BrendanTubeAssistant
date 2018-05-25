@@ -128,10 +128,7 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     ask(conv, 'I need to get your location to calculate your tube journey');
     ask(conv, 'Can you give me your permission?');
   } else {
-    const {coordinates} = conv.device.location;
-    conv.user.storage.location = coordinates;
-
-    ask(conv, `You are at lat: ${coordinates.latitude} lng: ${coordinates.longitude}`);
+    conv.user.storage.location = conv.device.location;
     ask(conv, new Place({
       prompt: 'What is your destination?',
       context: 'Get destination',
@@ -144,11 +141,14 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     ask(conv, "Sorry, I couldn't find where you want to go");
   } else {
     let {coordinates: endPoint} = place;
-    console.log(place);
-    let startPoint = conv.user.storage.location;
-
-    let journey = await callers.getJourney(startPoint, endPoint); 
-    console.log(journey);
+    let {coordinates: startPoint} = conv.user.storage.location;
+    try {
+      let journey = await callers.getJourney(startPoint, endPoint); 
+    } catch(e) {
+     console.log(e); 
+     ask(conv, 'Sorry I cannot tell you that answer at the moment');
+     ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
+    }
     ask(conv, 'this is your journey');
   }
 }
