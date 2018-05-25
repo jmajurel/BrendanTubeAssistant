@@ -40,7 +40,7 @@ const DEFAULT_FALLBACK = [
 function ask(conv, inputPrompt='', noInputPrompts=null) {
   conv.data.lastPrompt = inputPrompt;
   conv.data.lastNoInputPrompts = noInputPrompts;
-  conv.ask(inputPrompt);
+  conv.ask(inputPrompt, noInputPrompts);
 }
 
 //UC1 tube status update
