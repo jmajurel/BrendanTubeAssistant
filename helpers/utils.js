@@ -8,7 +8,7 @@ const insertSsmlBreak = (arr, time='') => {
     arr.join('<break/>');
 };
 
-const sanitiseForSsml = (arr) => {
+const sanitiseForSsml = arr => {
   return arr.map(item => {
      return item
        .replace(/&/g, '&amp;')
@@ -18,4 +18,9 @@ const sanitiseForSsml = (arr) => {
   })
 };
 
-module.exports = { insertSsmlBreak, sanitiseForSsml };
+const fetchPrompt = arr => {
+  let randomIdx = Math.round(Math.random() * (arr.length - 1));
+  return arr[randomIdx];
+}
+
+module.exports = { insertSsmlBreak, sanitiseForSsml, fetchPrompt };
