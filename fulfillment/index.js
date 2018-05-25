@@ -140,13 +140,26 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     ask(conv, "Sorry, I couldn't find where you want to go");
   } else {
+    let brendan = new ssml();
     let {coordinates: endPoint} = place;
     let {coordinates: startPoint} = conv.user.storage.location;
     try {
       let {journeys} = await callers.getJourney(startPoint, endPoint); 
       let {legs: steps} = journeys[0];
-      let sentence = steps.map(({instruction}) => instruction.summary).join(" ");
-      ask(conv, sentence);
+      let intructions = steps.map(({instruction}) => instruction.summary);
+      brendan.says('Ok, you have to ')
+      intructions.forEach((inst, idx, arr) => {
+	let suffix = ' and '
+	if(idx === 0){
+	  suffix = ' then ';
+	} else if (idx >
+       	else if(idx === arr.length-2){
+	  suffix = ' and finally ';
+	}
+	brendan.says(inst).break(500).says(suffix);
+      })
+
+      ask(conv, brendan);
     } catch(e) {
       console.log(e);
       ask(conv, 'Sorry I cannot tell you that answer at the moment');
