@@ -169,8 +169,8 @@ modulePackage.help = conv => {
 modulePackage.welcome = (conv) => {
   ask(conv, fetchPrompt(WELCOME_PROMPTS)); //greating welcome message
   ask(conv, fetchPrompt(HELP_PROMPTS)); //drive the conversation to available intents
-  ask(conv, 'What would you be interrested in ?');
-  ask(conv, new Suggestions(...features)); //suggestion chips for visual interface
+  ask(conv, 'What would you be interrested in ?', new Suggestions(...features));
+  //suggestion chips for visual interface
 };
 
 //default intent handler 
