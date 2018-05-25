@@ -143,9 +143,8 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     let {coordinates: endPoint} = place;
     let {coordinates: startPoint} = conv.user.storage.location;
     try {
-      let journey1 = await callers.getJourney(startPoint, endPoint); 
-      console.log(journey1);
-      let {legs: steps} = journey1[0];
+      let {journeys} = await callers.getJourney(startPoint, endPoint); 
+      let {legs: steps} = journeys[0];
       let sentence = steps.map(({instruction}) => instruction.summary).join(" ");
       ask(conv, sentence);
     } catch(e) {
