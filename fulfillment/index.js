@@ -37,10 +37,9 @@ const DEFAULT_FALLBACK = [
 ];
 
 //proxy function that store the previous conversation 
-function ask(conv, inputPrompt, noInputPrompts) {
+function ask(conv, inputPrompt) {
   conv.data.lastPrompt = inputPrompt;
-  conv.data.lastNoInputPrompts = noInputPrompts;
-  conv.ask(inputPrompt, noInputPrompts);
+  conv.ask(inputPrompt);
 }
 
 //UC1 tube status update
@@ -67,7 +66,8 @@ modulePackage.statusUpdates = async (conv) => {
     }
 
     //conversation reply
-    ask(conv, brendan.toString({ full:true, minimal: true }), panel);
+    ask(conv, brendan.toString({ full:true, minimal: true }));
+    ask(conv, panel);
 
     //visual rely
 
@@ -76,7 +76,7 @@ modulePackage.statusUpdates = async (conv) => {
     ask(conv, 'Sorry I cannot get the tube update at the moment');
     ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   }
-  ask(conv, '', new Suggestions(...features)); //suggestion chips for visual interface
+  ask(conv, new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 //UCX provide tube lines list
@@ -109,8 +109,8 @@ modulePackage.lines = async (conv) => {
     ask(conv, 'Sorry I cannot tell you that answer at the moment');
     ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
   } 
-  ask(conv, new Suggestions(...features)); //suggestion chips for visual interface
   ask(conv, 'Additionaly, I can give you the status update'); //drive the conversation to available intents
+  ask(conv, new Suggestions(...features)); //suggestion chips for visual interface
 };
 
 
@@ -155,6 +155,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
 
 //repeat intent
 modulePackage.repeat = conv => {
+  console.log(conv.data.lastPrompt);
   ask(conv, fetchPrompt(REPEAT_PREFIX) + conv.data.lastPrompt);
 }
 
