@@ -149,6 +149,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
       ask(conv, sentence);
 
     } catch(e) {
+      console.log(e);
      ask(conv, 'Sorry I cannot tell you that answer at the moment');
      ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
     }
