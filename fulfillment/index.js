@@ -167,7 +167,7 @@ modulePackage.help = conv => {
 }
 
 //welcome intent handler 
-modulePackage.welcome = (conv) => {
+modulePackage.welcome = conv => {
   ask(conv, fetchPrompt(WELCOME_PROMPTS)); //greating welcome message
   ask(conv, fetchPrompt(HELP_PROMPTS)); //drive the conversation to available intents
   ask(conv, 'What would you be interrested in ?'); 
@@ -175,7 +175,7 @@ modulePackage.welcome = (conv) => {
 };
 
 //default intent handler 
-modulePackage.defaultFallback = (conv) => {
+modulePackage.defaultFallback = conv => {
   ask(conv, fetchPrompt(DEFAULT_FALLBACK));
   ask(conv, fetchPrompt(HELP_PROMPTS)); //drive the conversation to available intents
   ask(conv, 'What would you be interrested in ?');
