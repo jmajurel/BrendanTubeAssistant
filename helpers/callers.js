@@ -49,6 +49,8 @@ modulePackage.getCurrLocation = function() {
 }
 
 modulePackage.getJourney = function(startLoc, endLoc){
+  console.log(startLoc);
+  console.log(endLoc);
   rpOptionTFL.uri = `/journey/journeyresults/${startLoc.lat},${startLoc.lng}/to/${endLoc.lat},${endLoc.lng}`;
   return rp(rpOptionTFL);
 }
