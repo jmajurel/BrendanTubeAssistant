@@ -143,13 +143,16 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     let {coordinates: endPoint} = place;
     let {coordinates: startPoint} = conv.user.storage.location;
     try {
-      let journey = await callers.getJourney(startPoint, endPoint); 
+      let [journey1] = await callers.getJourney(startPoint, endPoint); 
+      let {legs: steps} = journey1;
+      let sentence = steps.map(({instruction}) => instruction.summary).join(" ");
+      ask(conv, sentence);
+
     } catch(e) {
      console.log(e); 
      ask(conv, 'Sorry I cannot tell you that answer at the moment');
      ask(conv, 'I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
     }
-    ask(conv, 'this is your journey');
   }
 }
 
