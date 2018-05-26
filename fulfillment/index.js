@@ -7,14 +7,11 @@ const {
   Permission,
   Place } = require('actions-on-google');
 
-const ssml = require('ssml');
 
 const {sanitiseForSsml, insertSsmlBreak, fetchPrompt} = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
 
-let brendan = new ssml();
-app.use(()=> brendan.clear());
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
@@ -53,22 +50,21 @@ modulePackage.statusUpdates = async (conv) => {
     let panel = businessB.generatedStatusPanel(lines);
 
     /* Build sentence for Brendan */
-    let brendan = new ssml();
 
-    brendan.say('There are');
+    conv.data.brendanSays.say('There are');
 
     if(updates.size > 1){
       for(let [status, lines] of updates){
 	lines = sanitiseForSsml(lines);
-        brendan.say(` ${status} on ${insertSsmlBreak(lines, 80)}`);
+        conv.data.brendanSays.say(` ${status} on ${insertSsmlBreak(lines, 80)}`);
       }
     } else {
       let [uniqueStatus] = updates;
-      brendan.say(` ${uniqueStatus[0]} on all lines`);
+      conv.data.brendanSays.say(` ${uniqueStatus[0]} on all lines`);
     }
 
     //conversation reply
-    ask(conv, brendan.toString({ full:true, minimal: true }));
+    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }));
     ask(conv, panel);
 
     //visual rely
@@ -87,9 +83,8 @@ modulePackage.lines = async (conv) => {
   try {
     let lines = await callers.getLines();
     let sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
-    let brendan = new ssml();
 
-    brendan.say('There are')
+    conv.data.brendanSays.say('There are')
       .say({
         text: `${lines.length}`,
         interpretAs: 'cardinal'
@@ -97,7 +92,7 @@ modulePackage.lines = async (conv) => {
       .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`);
 
     //conversation reply
-    ask(conv, brendan.toString({ full:true, minimal: true }));
+    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }));
 
     //visual reply
     ask(conv, new Table({
@@ -148,7 +143,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
       let {journeys} = await callers.getJourney(startPoint, endPoint); 
       let {legs: steps} = journeys[0];
       let intructions = steps.map(({instruction}) => instruction.summary);
-      brendan.says('Ok, you have to ')
+      conv.data.brendanSays.say('Ok, you have to ')
       intructions.forEach((inst, idx, arr) => {
 	let suffix = ' and '
 	if(idx === 0){
@@ -157,10 +152,10 @@ modulePackage.get_destination = async (conv, params, place, status) => {
        	else if(idx === arr.length-2){
 	  suffix = ' and finally ';
 	}
-	brendan.says(inst).break(500).says(suffix);
+	conv.data.brendanSays.say(inst).break(500).say(suffix);
       })
 
-      ask(conv, brendan.toString({ full:true, minimal: true }));
+      ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }));
     } catch(e) {
       console.log(e);
       ask(conv, 'Sorry I cannot tell you that answer at the moment');
