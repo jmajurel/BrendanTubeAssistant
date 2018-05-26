@@ -146,12 +146,11 @@ modulePackage.get_destination = async (conv, params, place, status) => {
       conv.data.brendanSays.say('Ok, you have to ')
       intructions.forEach((inst, idx, arr) => {
 	let suffix = ' and '
-	if(idx === 0){
+	/*if(idx === 0){
 	  suffix = ' then ';
-	} else if (idx >
        	else if(idx === arr.length-2){
 	  suffix = ' and finally ';
-	}
+	}*/
 	conv.data.brendanSays.say(inst).break(500).say(suffix);
       })
 
