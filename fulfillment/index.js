@@ -13,6 +13,8 @@ const {sanitiseForSsml, insertSsmlBreak, fetchPrompt} = require('../helpers/util
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
 
+let brendan = new ssml();
+app.use(()=> brendan.clear());
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
@@ -140,7 +142,6 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     ask(conv, "Sorry, I couldn't find where you want to go");
   } else {
-    let brendan = new ssml();
     let {coordinates: endPoint} = place;
     let {coordinates: startPoint} = conv.user.storage.location;
     try {
@@ -159,7 +160,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
 	brendan.says(inst).break(500).says(suffix);
       })
 
-      ask(conv, brendan);
+      ask(conv, brendan.toString({ full:true, minimal: true }));
     } catch(e) {
       console.log(e);
       ask(conv, 'Sorry I cannot tell you that answer at the moment');
@@ -183,6 +184,7 @@ modulePackage.help = conv => {
 
 //welcome intent handler 
 modulePackage.welcome = conv => {
+  
   ask(conv, fetchPrompt(WELCOME_PROMPTS)); //greating welcome message
   ask(conv, fetchPrompt(HELP_PROMPTS)); //drive the conversation to available intents
   ask(conv, 'What would you be interrested in ?'); 

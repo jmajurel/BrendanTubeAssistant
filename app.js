@@ -7,9 +7,8 @@ const brendan = require('./fulfillment');
 const app = dialogflow();
 
 app.intent('status_updates', brendan.statusUpdates); //UC1
+app.intent('journey', brendan.journey); //UC2
 app.intent('lines', brendan.lines);
-
-app.intent('journey', brendan.journey);
 app.intent('get_location', brendan.get_location);
 app.intent('get_destination', brendan.get_destination);
 
