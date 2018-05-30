@@ -1,15 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const {dialogflow} = require('actions-on-google');
-const ssml = require('ssml');
 
 const brendan = require('./fulfillment');
 
 const app = dialogflow();
-
-app.init = conv => {
-  conv.data.brendanSays = new ssml();
-}
 
 app.middleware(conv => conv.data.brendanSays.clear());
 
