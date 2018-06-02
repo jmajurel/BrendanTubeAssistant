@@ -89,49 +89,8 @@ modulePackage.statusUpdates = async (conv) => {
   }
 };
 
-//UCX provide tube lines list
-modulePackage.lines = async (conv) => {
 
-  try {
-    let lines = await callers.getLines();
-    let sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
-
-    conv.data.brendanSays.say('There are')
-      .say({
-        text: `${lines.length}`,
-        interpretAs: 'cardinal'
-      })
-      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
-      .break(500)
-      .say('Additionaly, I can give you the status update')
-
-    //conversation reply
-    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), new Suggestions(...features));
-
-    //visual reply
-    /*ask(conv, new Table({
-      title: 'Tube Lines',
-      dividers: true,
-      columns: ['name'],
-      rows: [sanitisedLines]
-    }));*/
-  } catch(e) {
-
-    console.log(e);
-
-    conv.data.brendanSays
-      .clear()
-      .say('Sorry I cannot tell you that answer at the moment')
-      .break(500)
-      .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
-
-    ask(conv,conv.data.brendanSays.toString({ full: true, minimal: true}));
-  } 
-};
-
-
-
-//UCX journey
+//UC2 journey
 modulePackage.journey = (conv) => {
   ask(conv, new Permission({
     context: 'Current location',
@@ -188,6 +147,46 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     }
   }
 }
+
+//UCX provide tube lines list [small bonus]
+modulePackage.lines = async (conv) => {
+
+  try {
+    let lines = await callers.getLines();
+    let sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
+
+    conv.data.brendanSays.say('There are')
+      .say({
+        text: `${lines.length}`,
+        interpretAs: 'cardinal'
+      })
+      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
+      .break(500)
+      .say('Additionaly, I can give you the status update')
+
+    //conversation reply
+    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), new Suggestions(...features));
+
+    //visual reply
+    /*ask(conv, new Table({
+      title: 'Tube Lines',
+      dividers: true,
+      columns: ['name'],
+      rows: [sanitisedLines]
+    }));*/
+  } catch(e) {
+
+    console.log(e);
+
+    conv.data.brendanSays
+      .clear()
+      .say('Sorry I cannot tell you that answer at the moment')
+      .break(500)
+      .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
+
+    ask(conv,conv.data.brendanSays.toString({ full: true, minimal: true}));
+  } 
+};
 
 //repeat intent
 modulePackage.repeat = conv => {

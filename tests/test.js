@@ -7,6 +7,7 @@ const FAKE_PROMPT = [
   'I am drinking coffee'
 ];
 
+/* Use case 1 - status update*/
 actions.startTest('Get tube update', action => {
 
   return action.startConversation()
