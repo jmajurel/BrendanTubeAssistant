@@ -7,11 +7,9 @@ const {
   Permission,
   Place } = require('actions-on-google');
 
-
 const {sanitiseForSsml, insertSsmlBreak, fetchPrompt} = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
-const ssml = require('ssml');
 
 /* Brendan London Tube expert - fulfillments */
 
@@ -213,8 +211,6 @@ modulePackage.help = conv => {
 
 //welcome intent handler 
 modulePackage.welcome = conv => {
-
-  conv.data.brendanSays = new ssml(); //initialize and store ssml instance
 
   conv.data.brendanSays
     .say(fetchPrompt(WELCOME_PROMPTS)) //greating welcome message

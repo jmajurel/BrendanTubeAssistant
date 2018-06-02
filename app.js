@@ -3,16 +3,22 @@ const bodyParser = require('body-parser');
 const {dialogflow} = require('actions-on-google');
 
 const brendan = require('./fulfillment');
+const ssml = require('ssml');
 
 const app = dialogflow();
 
-app.middleware(conv => conv.data.brendanSays.clear());
+app.middleware(conv => {
+  conv.data.brendanSays = new ssml();
+}) 
 
 app.intent('status_updates', brendan.statusUpdates); //UC1
-app.intent('journey', brendan.journey); //UC2
+
+/* UC2 */
+app.intent('journey', brendan.journey); 
 app.intent('get_location', brendan.get_location);
 app.intent('get_destination', brendan.get_destination);
 
+/* UCX - Bonus */
 app.intent('lines', brendan.lines); 
 
 app.intent('repeat', brendan.repeat);
