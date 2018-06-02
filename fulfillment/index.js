@@ -73,13 +73,14 @@ modulePackage.statusUpdates = async (conv) => {
 
     //conversation reply
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), panel);
+    ask(conv, '', new Suggestions(...features));
 
   } catch(e) {
     console.log(e);
 
     conv.data.brendanSays
       .clear()
-      .says('Sorry I cannot get the tube update at the moment')
+      .says('Sorry I cannot get the tube update at the moment.')
       .break(500)
       .says('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?');
     
@@ -138,10 +139,11 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     } catch(e) {
       conv.data.brendanSays
 	.clear()
-	.say('Sorry I cannot tell you that answer at the moment')
+	.say('<p><s>Sorry I did my best however I cannot get you the intructions.</s>')
 	.break(500)
-	.say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
-      ask(conv,conv.data.brendanSays.toString({full: true, minimal: true})); 
+	.say('<s>I can give you the latest tube update or the list of tube lines in London</s>'); //drive the conversation to available intents
+        .say('<s>which one of these do you want to be inform?</s></p>')
+      ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features)); 
     }
   }
 }
@@ -153,25 +155,25 @@ modulePackage.lines = async (conv) => {
     let lines = await callers.getLines();
     let sanitisedLines = sanitiseForSsml(lines.map(({name}) => name));
 
-    conv.data.brendanSays.say('There are')
+    conv.data.brendanSays.say('<p><s>There are')
       .say({
         text: `${lines.length}`,
         interpretAs: 'cardinal'
       })
-      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}`)
+      .say(` tube lines in London which are ${insertSsmlBreak(sanitisedLines, 80)}</s>`)
       .break(500)
-      .say('Additionaly, I can give you the status update')
+      .say('<s>Additionaly, I can give you the status update</s></p>')
 
     //conversation reply
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), new Suggestions(...features));
 
     //visual reply
-    /*ask(conv, new Table({
+    ask(conv, '', new Table({
       title: 'Tube Lines',
       dividers: true,
-      columns: ['name'],
-      rows: [sanitisedLines]
-    }));*/
+      columns: new Array('Line'),
+      rows: lines.map(({name}) => name)
+    }));
   } catch(e) {
 
     console.log(e);
@@ -182,7 +184,7 @@ modulePackage.lines = async (conv) => {
       .break(500)
       .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
 
-    ask(conv,conv.data.brendanSays.toString({ full: true, minimal: true}));
+    ask(conv, conv.data.brendanSays.toString({ full: true, minimal: true}), new Suggestions(...features));
   } 
 };
 
