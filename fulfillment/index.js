@@ -141,7 +141,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
 	.clear()
 	.say('<p><s>Sorry I did my best however I cannot get you the intructions.</s>')
 	.break(500)
-	.say('<s>I can give you the latest tube update or the list of tube lines in London</s>'); //drive the conversation to available intents
+	.say('<s>I can give you the latest tube update or the list of tube lines in London</s>') //drive the conversation to available intents
         .say('<s>which one of these do you want to be inform?</s></p>')
       ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features)); 
     }
