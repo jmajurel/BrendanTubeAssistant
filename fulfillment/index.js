@@ -49,7 +49,7 @@ function ask(conv, inputPrompt, noInputPrompt) {
 }
 
 //UC1 tube status update
-modulePackage.statusUpdates = async (conv) => {
+modulePackage.statusUpdates = async function (conv) {
 
   try { 
     let [severity, lines] = await Promise.all([callers.getSeverity(), callers.getStatus()]);
