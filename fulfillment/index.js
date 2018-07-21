@@ -59,21 +59,24 @@ modulePackage.statusUpdates = async function (conv) {
     /* Build sentence for Brendan */
 
     conv.data.brendanSays
-      .say('There are');
+      .say('<p>There are');
 
     if(updates.size > 1){
       for(let [status, lines] of updates){
 	lines = sanitiseForSsml(lines);
-        conv.data.brendanSays.say(` ${status} on ${insertSsmlBreak(lines, 80)}`);
+        conv.data.brendanSays
+          .say(`<s>${status} on ${insertSsmlBreak(lines, 80)}</s>`)
+          .break(500);
       }
     } else {
       let [uniqueStatus] = updates;
-      conv.data.brendanSays.say(` ${uniqueStatus[0]} on all lines`);
+      conv.data.brendanSays
+        .say(`<s>${uniqueStatus[0]} on all lines</s>`);
     }
 
     conv.data.brendanSays
       .break(500)
-      .say('I can help you to plan a journey or tell you the tube lines running in London.')
+      .say('</p> I can help you to plan a journey or tell you the tube lines running in London.')
       .break(500)
       .say('What would you like to know?')
 
