@@ -125,7 +125,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     conv.data.brendanSays
       .say("Sorry, I couldn't find where you want to go")
       .break(500)
-      .says('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?');
+      .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?');
 
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
   } else {
