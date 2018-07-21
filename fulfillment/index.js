@@ -71,11 +71,12 @@ modulePackage.statusUpdates = async function (conv) {
       conv.data.brendanSays.say(` ${uniqueStatus[0]} on all lines`);
     }
 
-    conv.data.brendanSays.says('I can help you to plan a journey or give you the tube lines running in London. What would you like to know?')
+    conv.data.brendanSays
+      .says('I can help you to plan a journey or give you the tube lines running in London. What would you like to know?')
 
     //status update + suggestions
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), panel);
-    ask(conv, , new Suggestions(...features));
+    ask(conv,'' , new Suggestions(...features));
 
   } catch(e) {
     console.log(e);
