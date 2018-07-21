@@ -7,7 +7,7 @@ const {
   Permission,
   Place } = require('actions-on-google');
 
-const {sanitiseForSsml, insertSsmlBreak, fetchPrompt} = require('../helpers/utils.js');
+const { sanitiseForSsml, insertSsmlBreak, fetchPrompt } = require('../helpers/utils.js');
 const businessB = require('../helpers/businessBehaviours.js');
 const callers = require('../helpers/callers.js');
 
@@ -134,12 +134,12 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     try {
       let {journeys} = await callers.getJourney(startPoint, endPoint); 
       let {legs: steps} = journeys[0];
-      let intructions = steps.map(({instruction}) => instruction.summary);
+      let instructions = steps.map(({instruction}) => instruction.summary);
 
       conv.data.brendanSays
 	.say('<p>Ok, you have to ')
 
-      intructions.forEach((inst, idx, arr) => {
+      instructions.forEach((inst, idx, arr) => {
 
 	conv.data.brendanSays
 	.say(`<s>${inst}</s>`)
@@ -167,7 +167,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     } catch(e) {
       conv.data.brendanSays
 	.clear()
-	.say('<p><s>Sorry I did my best however I cannot get you the intructions.</s>')
+	.say('<p><s>Sorry I did my best however I cannot get you the instructions.</s>')
 	.break(500)
 	.say('<s>I can give you the latest tube update or the list of tube lines in London</s>') //drive the conversation to available intents
         .say('<s>which one of these do you want to be inform?</s></p>')
