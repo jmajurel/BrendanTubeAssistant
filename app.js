@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {dialogflow} = require('actions-on-google');
+const { dialogflow } = require('actions-on-google');
 
 const brendan = require('./fulfillment');
 const ssml = require('ssml');

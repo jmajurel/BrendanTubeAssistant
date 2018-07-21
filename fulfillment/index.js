@@ -77,8 +77,6 @@ modulePackage.statusUpdates = async function (conv) {
       .break(500)
       .say('What would you like to know?')
 
-
-
     //status update + suggestions
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), panel);
     ask(conv, '', new Suggestions(...features));
@@ -135,14 +133,32 @@ modulePackage.get_destination = async (conv, params, place, status) => {
       let intructions = steps.map(({instruction}) => instruction.summary);
 
       conv.data.brendanSays
-	.say('Ok, you have to ')
+	.say('<p>Ok, you have to ')
+
       intructions.forEach((inst, idx, arr) => {
-	var suffix = ' and '
+
 	conv.data.brendanSays
-	.say(inst)
+	.say(`<s>${inst}</s>`)
 	.break(500)
-	.say(suffix);
-      })
+
+        //only add suffix during the conversation
+        //except for the last sentence
+        if(idx < arr.length - 1) {
+          conv.data.brendanSays
+            .say(' and ');
+        } else {
+          conv.data.brendanSays
+            .say('</p>');
+        }
+      });
+       
+      conv.data.brendanSays
+        .break(500)
+        .say('I can give you the status update or tell you the tube lines running in London.')
+        .break(500)
+        .say('What would you like to know?');
+
+      // response plus suggestions
       ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
     } catch(e) {
       conv.data.brendanSays
