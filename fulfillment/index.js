@@ -123,6 +123,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
   if(!place) {
     conv.data.brendanSays
       .say("Sorry, I couldn't find where you want to go");
+      .break(500);
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
   } else {
     let {coordinates: endPoint} = place;
@@ -195,8 +196,8 @@ modulePackage.lines = async (conv) => {
     ask(conv, '', new Table({
       title: 'Tube Lines',
       dividers: true,
-      columns: new Array('Line'),
-      rows: lines.map(({name}) => name)
+      columns: ['line'],
+      rows: lines.map(({name}) => [`${name}`])
     }));
   } catch(e) {
 
