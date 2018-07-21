@@ -72,7 +72,12 @@ modulePackage.statusUpdates = async function (conv) {
     }
 
     conv.data.brendanSays
-      .say('I can help you to plan a journey or give you the tube lines running in London. What would you like to know?')
+      .break(500)
+      .say('I can help you to plan a journey or tell you the tube lines running in London.')
+      .break(500)
+      .say('What would you like to know?')
+
+
 
     //status update + suggestions
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), panel);
