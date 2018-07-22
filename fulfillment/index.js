@@ -110,9 +110,12 @@ modulePackage.journey = (conv) => {
 modulePackage.get_location = (conv, params, permissionGranted) => {
   if(!permissionGranted){
     conv.data.brendanSays
-      .say('I need to get your location to calculate your tube journey')
+      .say('Sorry I cannot without your permission')
       .break(500)
-      .say('Can you give me your permission?');
+      .say('I can inform you about the tube status or tell you about the lines')
+      .break(500)
+      .say('Could you please tell me, what would you be interrested in?');
+
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}))
   } else {
     conv.user.storage.location = conv.device.location;
