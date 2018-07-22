@@ -123,7 +123,7 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
       prompt: 'What is your destination?',
       context: 'Get destination',
     }));
-    ask(conv, '', new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
+    ask(conv, '', new Suggestions(['London Bridge', 'St Paul\'s Cathedral', 'Leicester Square']));
   }
 }
 
