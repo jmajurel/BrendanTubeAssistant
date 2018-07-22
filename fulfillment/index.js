@@ -119,10 +119,10 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}))
   } else {
     conv.user.storage.location = conv.device.location;
-    ask(conv, new Place({
+    ask(conv, '', [new Place({
       prompt: 'What is your destination?',
       context: 'Get destination',
-    }), new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
+    }), new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square')]);
   }
 }
 
@@ -132,7 +132,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     conv.data.brendanSays
       .say("Sorry, I couldn't find where you want to go")
       .break(500)
-      .say('I get for you the latest tube update and tell you more about tube lines in London.')
+      .say('I could get for you the latest tube update and tell you more about tube lines in London.')
       .break(500)
       .say('Which one of these do you want to be inform?');
 
