@@ -14,11 +14,10 @@ const callers = require('../helpers/callers.js');
 /* Brendan London Tube expert - fulfillments */
 
 let modulePackage = {};
-const features = ['update', 'lines', 'journey'];
 
 const REPEAT_PREFIX = [
     'Sorry, I said ',
-    'Let me repeat that. ',
+    'Let me repeat that. '
 ];
 
 const HELP_PROMPTS = [
@@ -31,7 +30,8 @@ const WELCOME_PROMPTS = [
 ];
 
 const DEFAULT_FALLBACK = [
-  'Sorry dear traveller, I didn\'t catch that'
+  'Sorry dear traveller, I didn\'t catch that',
+  'Hmm, Sorry I didn\'t understand'
 ];
 
 //proxy function that store the previous conversation 
@@ -82,18 +82,19 @@ modulePackage.statusUpdates = async function (conv) {
 
     //status update + suggestions
     ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), panel);
-    ask(conv, '', new Suggestions(...features));
 
   } catch(e) {
     console.log(e);
 
     conv.data.brendanSays
       .clear()
-      .says('Sorry I cannot get the tube update at the moment.')
+      .say('Sorry I cannot get the tube update at the moment.')
       .break(500)
-      .says('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?');
-    
-    ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features));
+      .say('I can give you the list of tube lines in London or plan a journey.')
+      .break(500)
+      .say('Which one of these do you want to be inform?');
+
+    ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
   }
 };
 
@@ -118,7 +119,7 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     ask(conv, new Place({
       prompt: 'What is your destination?',
       context: 'Get destination',
-    }));
+    }), new Suggestion('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
   }
 }
 
@@ -128,7 +129,9 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     conv.data.brendanSays
       .say("Sorry, I couldn't find where you want to go")
       .break(500)
-      .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?');
+      .say('I get for you the latest tube update and tell you more about tube lines in London.')
+      .break(500)
+      .say('Which one of these do you want to be inform?');
 
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
   } else {
@@ -161,7 +164,7 @@ modulePackage.get_destination = async (conv, params, place, status) => {
        
       conv.data.brendanSays
         .break(500)
-        .say('I can give you the status update or tell you the tube lines running in London.')
+        .say('Otherwise, I can give you the status update or tell you the tube lines are running in London.')
         .break(500)
         .say('What would you like to know?');
 
@@ -170,11 +173,11 @@ modulePackage.get_destination = async (conv, params, place, status) => {
     } catch(e) {
       conv.data.brendanSays
 	.clear()
-	.say('<p><s>Sorry I did my best however I cannot get you the instructions.</s>')
+	.say('<p><s>Sorry I did my best however I cannot get you the instructions to get there.</s>')
 	.break(500)
-	.say('<s>I can give you the latest tube update or the list of tube lines in London</s>') //drive the conversation to available intents
+	.say('<s>Meanwhile, I can give you the tube update or the list of tube lines in London</s>') //drive the conversation to available intents
         .say('<s>which one of these do you want to be inform?</s></p>')
-      ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features)); 
+      ask(conv, conv.data.brendanSays.toString({full: true, minimal: true})); 
     }
   }
 }
@@ -196,7 +199,7 @@ modulePackage.lines = async (conv) => {
       .say('<s>Additionaly, I can give you the status update</s></p>')
 
     //conversation reply
-    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }), new Suggestions(...features));
+    ask(conv, conv.data.brendanSays.toString({ full:true, minimal: true }));
 
     //visual reply
     ask(conv, '', new Table({
@@ -213,9 +216,11 @@ modulePackage.lines = async (conv) => {
       .clear()
       .say('Sorry I cannot tell you that answer at the moment')
       .break(500)
-      .say('I can give you the latest tube update or the list of tube lines in London, which one of these do you want to be inform?'); //drive the conversation to available intents
+      .say('I can you plan a journey or give you the tube update')
+      .break(500)
+      .say('Which one of these do you want to be inform?') //drive the conversation to available intents
 
-    ask(conv, conv.data.brendanSays.toString({ full: true, minimal: true}), new Suggestions(...features));
+    ask(conv, conv.data.brendanSays.toString({ full: true, minimal: true}));
   } 
 };
 
@@ -228,7 +233,7 @@ modulePackage.repeat = conv => {
     .break(500)
     .say(conv.data.lastPrompt);
 
-  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features));
+  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
 }
 
 //help intent
@@ -237,9 +242,9 @@ modulePackage.help = conv => {
   conv.data.brendanSays
     .say(fetchPrompt(HELP_PROMPTS))
     .break(500)
-    .say('What would you be interrested in ?');
+    .say('What would you like to know?');
 
-  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features));
+  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
 }
 
 //welcome intent handler 
@@ -252,7 +257,7 @@ modulePackage.welcome = conv => {
     .break(500)
     .say('What would you be interrested in ?') 
 
-  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features));//suggestion chips for visual interface
+  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
 };
 
 //default intent handler 
@@ -265,7 +270,7 @@ modulePackage.defaultFallback = conv => {
     .break(500)
     .say('What would you be interrested in ?') 
 
-  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}), new Suggestions(...features));//suggestion chips for visual interface
+  ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}));
 };
 
 module.exports = modulePackage;
