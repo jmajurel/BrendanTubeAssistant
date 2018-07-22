@@ -119,10 +119,11 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}))
   } else {
     conv.user.storage.location = conv.device.location;
-    ask(conv, '', [new Place({
+    ask(conv, '', new Place({
       prompt: 'What is your destination?',
       context: 'Get destination',
-    }), new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square')]);
+    }));
+    ask(conv, '', new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
   }
 }
 
