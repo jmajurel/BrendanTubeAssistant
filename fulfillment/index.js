@@ -22,7 +22,7 @@ const REPEAT_PREFIX = [
 
 const HELP_PROMPTS = [
   'I can give you the tube status update, plan a journey or tell you which tube lines are present in London',
-  'Hmm I can help you with your tube journey, inform you about the latest status update or additionaly tell you how many lines are present in the london underground network'
+  'Hmm I can help you with your tube journey, inform you about the latest status update or tell you how many lines are present in the london underground network'
 ];
 
 const WELCOME_PROMPTS = [
@@ -119,7 +119,7 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
     ask(conv, new Place({
       prompt: 'What is your destination?',
       context: 'Get destination',
-    }), new Suggestion('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
+    }), new Suggestions('London Bridge', 'St Paul\'s Cathedral', 'Leicester Square'));
   }
 }
 
