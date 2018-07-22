@@ -113,7 +113,7 @@ modulePackage.get_location = (conv, params, permissionGranted) => {
       .say('I need to get your location to calculate your tube journey')
       .break(500)
       .say('Can you give me your permission?');
-    ask(conv, conv.data.bredanSays.toString({full: true, minimal: true}))
+    ask(conv, conv.data.brendanSays.toString({full: true, minimal: true}))
   } else {
     conv.user.storage.location = conv.device.location;
     ask(conv, new Place({
